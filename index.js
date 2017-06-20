@@ -10,9 +10,19 @@ var usernames = {}; // change to array? why tf am I using an object
 var moves = [];
 var activeCard = [];
 var hp = {};
+var history = '';
+var turn = 1;
 
 app.get('/', function(req, res){
+    res.sendFile(__dirname + '/welcome.html');
+});
+
+app.get('/game', function(req, res){
     res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/gandalf', function(req, res){
+    res.sendFile(__dirname + '/gandalf.html');
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -42,16 +52,13 @@ io.on('connection', function(socket) {
     socket.on('set hp', function(name, vals) {
         hp[[name]] = vals;
     });
-    // socket.on('get hp', function(name, vals, fn) {
-    //     hp[[name]] = vals;
-    //     fn(hp);
-    // });
 
     socket.on('use move', function(name, move, card, active) {
         moves.push({'username': name, 'move': move, 'card': card});
         activeCard.push(active);
 
-        io.emit('update history', name, move, card);
+        history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
+        //io.emit('update history', name, move, active);
 
         if (moves.length == 2) {
             var damages = calculator.calculate(moves);
@@ -60,7 +67,8 @@ io.on('connection', function(socket) {
 
             moves = [];
             activeCard = [];
-            io.emit('update', hp);
+            io.emit('update', hp, history, turn++);
+            history = "";
         }
     });
 
@@ -68,6 +76,10 @@ io.on('connection', function(socket) {
         console.log(socket.username + ' has disconnected');
         delete usernames[socket.username];
         moves = [];
+        activeCard = [];
+        hp = {};
+        history = '';
+        turn = 1;
     });
 });
 

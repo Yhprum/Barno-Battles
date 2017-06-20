@@ -25,7 +25,7 @@
 
 .history {
     position: absolute;
-    top: 0;
+    top: 50px;
     left: 640px;
     right: 0;
     bottom: 40px;
@@ -83,4 +83,8 @@ body .panel {
 
 body .panel:hover {
     border-width: 2px;
+}
+
+.turn {
+    font-size: 150%;
 }

@@ -68,7 +68,6 @@ $(document).ready(function() {
         c.clearRect(0, 0, width, height);
         c.fillRect(width - i, 0, i--, height);
         if (i < 0) { // timer runs out
-            console.log(selection);
             window.clearInterval(timer);
 
             var card = cards[activeCard];
@@ -81,15 +80,20 @@ $(document).ready(function() {
         }
     }
 
-    socket.on('update history', function(user, move, card) {
+    socket.on('update', function(hp, history, turn) {
         var row = document.createElement("tr");
         var text = document.createElement("td");
-        text.innerText = user + ' used ' + move + ' with ' + card;
+        text.innerHTML = '<p><b class="turn">Turn ' + turn + '<b></p>';
         row.appendChild(text);
         $("#history")[0].appendChild(row);
-    });
 
-    socket.on('update', function(hp) {
+        var row = document.createElement("tr");
+        var text = document.createElement("td");
+        text.innerHTML = history;
+        row.appendChild(text);
+
+        $("#history")[0].appendChild(row);
+
         $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
         $("#opponentHP")[0].innerText = hp[[opponentName]][[opponentCard]].hp;
         if (hp[[name]][[activeCard]].hp > 0 && hp[[opponentName]][[opponentCard]].hp > 0) {

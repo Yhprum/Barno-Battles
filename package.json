@@ -13,7 +13,7 @@
     "start": "node index.js"
   },
   "repository": {
-  "type": "git",
-  "url": "git://github.com/yhprum/barno-battles.git"
-}
+    "type": "git",
+    "url": "git://github.com/yhprum/barno-battles.git"
+  }
 }
