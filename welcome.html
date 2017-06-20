@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Barno Battles!</title>
-    <!-- <link href="css/main.css" rel="stylesheet"> -->
       <link href="css/bootstrap.min.css" rel="stylesheet">
       <script src="/socket.io/socket.io.js"></script>
       <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -29,7 +28,7 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    <div id="test">
+    <div id="body">
       <div class="container">
         <div class="text-center">
           <h1>Barno Battles!</h1>
@@ -39,15 +38,16 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               Online Users
+              <button id="login" style="float: right">Log In</button>
             </div>
             <div class="panel-body" >
-              <ul class="list-group">
+              <ul id="online" class="list-group">
               </ul>
             </div>
           </div> 
         </div>
       </div>
-      <button onclick='$("#test").load("index.html")'>test</button>
+      <button onclick='$("#body").load("index.html")'>start</button>
     </div>
   </body>
   <script src="js/welcome.js"></script>

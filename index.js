@@ -28,25 +28,15 @@ app.get('/gandalf', function(req, res){
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', function(socket) {
-    //io.emit("login");
-    if (Object.keys(usernames).length == 2) {
-        io.emit('room full');
-        io.emit('user list', usernames);
-    }
 
     socket.on('login', function(name) {
-        if (Object.keys(usernames).length == 2) {
-            io.emit('room full');
-            io.emit('user list', usernames);
-        } else {
-            socket.username = name;
-            usernames[name] = name;
-            console.log(name + ' has connected');
-            if (Object.keys(usernames).length == 2) {
-                //make a button visible or some shit
-                io.emit('start', usernames);
-            }
-        }
+        socket.username = name;
+        usernames[name] = socket.id;
+        console.log(name + ' has connected');
+        // if (Object.keys(usernames).length == 2) {
+        //     io.emit('start', usernames);
+        // }
+        io.emit('users', usernames);
     });
 
     socket.on('set hp', function(name, vals) {
@@ -56,9 +46,7 @@ io.on('connection', function(socket) {
     socket.on('use move', function(name, move, card, active) {
         moves.push({'username': name, 'move': move, 'card': card});
         activeCard.push(active);
-
         history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
-        //io.emit('update history', name, move, active);
 
         if (moves.length == 2) {
             var damages = calculator.calculate(moves);

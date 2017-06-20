@@ -5,7 +5,6 @@ function calculate(moves) {
     // move# = {'username': name, 'move': move, 'card': card}
     // move#.move can be: fast, slow, defend, anticipate, ability1, abililty2
     // move#.card = {'hp': hp, 'atk': atk, 'def': def}
-    //var damages = [];
     var damageTo1, damageTo2;
 
     if (move1.move == 'fast') {
