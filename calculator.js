@@ -17,7 +17,7 @@ function calculate(moves) {
             damageTo2 = move1.card.atk - move2.card.def;
         } else if (move2.move == 'defend') {
             if (move2.card.def * 2 > move1.card.atk) {
-                damageTo1 = 1; // maybe change this value
+                damageTo1 = 3; // maybe change this value
                 damageTo2 = 0;
             } else {
                 damageTo1 = 0;
@@ -45,7 +45,7 @@ function calculate(moves) {
         if (move2.move == 'fast') {
             if (move1.card.def * 2 > move2.card.atk) {
                 damageTo1 = 0;
-                damageTo2 = 1; // maybe change this value
+                damageTo2 = 3; // maybe change this value
             } else {
                 damageTo1 = move2.card.atk - move1.card.def * 2;
                 damageTo2 = 0;
@@ -65,8 +65,8 @@ function calculate(moves) {
             damageTo1 = move2.card.atk;
             damageTo2 = 0;
         } else if (move2.move == 'slow') {
-            damageTo1 = move1.card.atk; //move1 or move2? how to calculate anticipated damage
-            damageTo2 = 0;
+            damageTo1 = 0; 
+            damageTo2 = move1.card.atk; //move1 or move2? how to calculate anticipated damage
         } else if (move2.move == 'defend') {
             damageTo1 = 0;
             damageTo2 = 0;
@@ -77,14 +77,6 @@ function calculate(moves) {
     }
     if (damageTo1 < 0) damageTo1 == 0;
     if (damageTo2 < 0) damageTo2 == 0;
-    // var damages = {
-    //     [move1.username]: {
-    //         damage: damageTo1
-    //     },
-    //     [move2.username]: {
-    //         damage: damageTo2
-    //     }
-    // };
     var damages = [];
     damages[0] = damageTo1;
     damages[1] = damageTo2;
