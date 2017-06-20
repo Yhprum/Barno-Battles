@@ -1,0 +1,19 @@
+{
+  "name": "barno-battles",
+  "version": "0.0.1",
+  "description": "a fast-paced card battle",
+  "author": "Ryan Murphy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^2.0.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+  "type": "git",
+  "url": "git://github.com/yhprum/barno-battles.git"
+}
+}

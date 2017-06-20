@@ -1,0 +1,86 @@
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.box {
+    border: 1px solid #AAAAAA;
+}
+
+.battle {
+    position: relative;
+    width: 640px;
+    height: 360px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    -webkit-transform-origin: top left;
+}
+
+.history {
+    position: absolute;
+    top: 0;
+    left: 640px;
+    right: 0;
+    bottom: 40px;
+    height: auto;
+    width: auto;
+    word-wrap: break-word;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+#timer {
+    position: absolute;
+    left: 430px;
+    width: 200px;
+    height: 40px;
+    border:1px solid #000000;
+    margin-top: 10px;
+}
+
+.cards {
+    clear: both;
+}
+
+body .card {
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 160px;
+    background: #eafff2;
+}
+
+.actions {
+    clear: both;
+}
+
+body .action {
+    float: left;
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    padding-top: 25px;
+    width: 206px;
+    height: 80px;
+    background: #ccdfff;
+}
+
+body .panel {
+    text-align: center;
+    cursor: pointer;
+}
+
+body .panel:hover {
+    border-width: 2px;
+}
