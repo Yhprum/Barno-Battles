@@ -6,68 +6,83 @@ var path = require("path");
 
 var calculator = require("./calculator");
 
-var usernames = {}; // change to array? why tf am I using an object
-var moves = [];
-var activeCard = [];
-var hp = {};
+var usernames = {};
+var rooms = {};
 
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/index.html');
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/welcome.html');
+});
+
+app.get('/rules', function(req, res) {
+    res.sendFile(__dirname + '/rules.html');
+});
+
+app.get('/gandalf', function(req, res) {
+    res.sendFile(__dirname + '/gandalf.html');
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', function(socket) {
-    //io.emit("login");
-    if (Object.keys(usernames).length == 2) {
-        io.emit('room full');
-        io.emit('user list', usernames);
-    }
 
     socket.on('login', function(name) {
-        if (Object.keys(usernames).length == 2) {
-            io.emit('room full');
-            io.emit('user list', usernames);
-        } else {
-            socket.username = name;
-            usernames[name] = name;
-            console.log(name + ' has connected');
-            if (Object.keys(usernames).length == 2) {
-                //make a button visible or some shit
-                io.emit('start', usernames);
-            }
-        }
+        socket.username = name;
+        usernames[name] = socket.id;
+        console.log(name + ' has connected');
+        io.emit('users', usernames);
     });
 
-    socket.on('set hp', function(name, vals) {
-        hp[[name]] = vals;
+    socket.on('challenge', function(opponentName, challenger) {
+        io.to(usernames[[opponentName]]).emit('challenge', challenger);
     });
-    // socket.on('get hp', function(name, vals, fn) {
-    //     hp[[name]] = vals;
-    //     fn(hp);
-    // });
 
-    socket.on('use move', function(name, move, card, active) {
-        moves.push({'username': name, 'move': move, 'card': card});
-        activeCard.push(active);
+    socket.on('accept', function(opponentName) {
+        io.to(usernames[[opponentName]]).emit('accepted challenge');
+        rooms[[opponentName]] = {};
+        rooms[[opponentName]]['hp'] = {};
+        rooms[[opponentName]]['turn'] = 1;
+        rooms[[opponentName]]['activeCards'] = [];
+        rooms[[opponentName]]['moves'] = [];
+        rooms[[opponentName]]['history'] = '';
+    });
 
-        io.emit('update history', name, move, card);
+    socket.on('join room', function(roomname) {
+        socket.join(roomname);
+        rooms[[roomname]]['hp'][[socket.username]] = {};
+        io.to(usernames[socket.username]).emit('start game');
+    });
 
-        if (moves.length == 2) {
-            var damages = calculator.calculate(moves);
-            hp[[moves[0].username]][[activeCard[0]]].hp -= damages[0];
-            hp[[moves[1].username]][[activeCard[1]]].hp -= damages[1];
+    socket.on('set hp', function(name, vals, roomname) {
+        rooms[[roomname]]['hp'][[name]] = vals;
+    });
 
-            moves = [];
-            activeCard = [];
-            io.emit('update', hp);
+    socket.on('use move', function(name, move, card, active, roomname) {
+        rooms[[roomname]]['moves'].push({'username': name, 'move': move, 'card': card});
+        rooms[[roomname]]['activeCards'].push(active);
+        rooms[[roomname]].history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
+
+        if (rooms[[roomname]]['moves'].length == 2) {
+            var damages = calculator.calculate(rooms[[roomname]]['moves']);
+            var active0 = rooms[[roomname]]['activeCards'][0];
+            var active1 = rooms[[roomname]]['activeCards'][1];
+            var player0 = rooms[[roomname]]['moves'][0].username;
+            var player1 = rooms[[roomname]]['moves'][1].username;
+
+            rooms[[roomname]]['hp'][[player0]][[active0]].hp -= damages[0];
+            rooms[[roomname]]['hp'][[player1]][[active1]].hp -= damages[1];
+
+            rooms[[roomname]]['moves'] = [];
+            rooms[[roomname]]['activeCards'] = [];
+            io.to(roomname).emit('update', rooms[[roomname]]['hp'], rooms[[roomname]].history, rooms[[roomname]].turn);
+            rooms[[roomname]].turn += 1;
+            rooms[[roomname]].history = "";
         }
     });
 
     socket.on('disconnect', function(){
         console.log(socket.username + ' has disconnected');
         delete usernames[socket.username];
-        moves = [];
+        io.emit('users', usernames);
     });
 });
 
