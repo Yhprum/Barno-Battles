@@ -21,15 +21,30 @@ $(document).ready(function() {
         socket.on('users', function(usernames) {
             $("#online").empty();
             for (var username in usernames) {
-                if (username != name) {
-                    $("#online").append("<li class='list-group-item'>" + username + "<button id='chal" + username + "' style='float: right'>Request</button></li>");
-                    $("#chal" + username).on('click', function() {
-                        opponent = this.id.substring(4, this.id.length);
-                        socket.emit('challenge', opponent, name);
-                        $("#chal" + opponent).hide();
+                if (usernames.hasOwnProperty(username)) {
+                    if (username != name) {
+                        $("#online").append("<li class='list-group-item'>" + username + "<button id='chal" + username + "' style='float: right'>Request</button></li>");
+                        $("#chal" + username).on('click', function() {
+                            opponent = this.id.substring(4, this.id.length);
+                            socket.emit('challenge', opponent, name);
+                            $("#chal" + opponent).hide();
+                        });
+                    } else {
+                        $("#online").append("<li class='list-group-item'>" + username + "</li>")
+                    }
+                }
+            }
+        });
+
+        socket.on('battles', function(rooms) {
+            $("#battles").empty();
+            for (var room in rooms) {
+                if (rooms.hasOwnProperty(room)) {
+                    var battleTitle = rooms[[room]].players[0] + " vs. " + rooms[[room]].players[1];
+                    $("#battles").append("<li class='list-group-item'>" + battleTitle + "<button id='batl" + room + "' style='float: right'>Spectate</button></li>");
+                    $("#batl" + room).on('click', function() {
+                        
                     });
-                } else {
-                    $("#online").append("<li class='list-group-item'>" + username + "</li>")
                 }
             }
         });
@@ -39,7 +54,7 @@ $(document).ready(function() {
             $("#ac" + opponentName).on('click', function() {
                 roomname = this.id.substring(2, this.id.length);
                 opponent = opponentName;
-                socket.emit('accept', roomname, name);
+                socket.emit('accept', roomname, name, opponent);
                 socket.emit('join room', roomname);
 
             });
