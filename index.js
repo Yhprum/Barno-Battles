@@ -8,9 +8,6 @@ var calculator = require("./calculator");
 
 var usernames = {};
 var rooms = {};
-var moves = [];
-var activeCard = [];
-var hp = {};
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/welcome.html');
@@ -18,10 +15,6 @@ app.get('/', function(req, res) {
 
 app.get('/rules', function(req, res) {
     res.sendFile(__dirname + '/rules.html');
-});
-
-app.get('/game', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/gandalf', function(req, res) {
@@ -48,6 +41,8 @@ io.on('connection', function(socket) {
         rooms[[opponentName]] = {};
         rooms[[opponentName]]['hp'] = {};
         rooms[[opponentName]]['turn'] = 1;
+        rooms[[opponentName]]['activeCards'] = [];
+        rooms[[opponentName]]['moves'] = [];
         rooms[[opponentName]]['history'] = '';
     });
 
@@ -61,19 +56,23 @@ io.on('connection', function(socket) {
         rooms[[roomname]]['hp'][[name]] = vals;
     });
 
-    socket.on('use move', function(name, move, card, active, roomname) { // update to use rooms
-        moves.push({'username': name, 'move': move, 'card': card});
-        activeCard.push(active);
+    socket.on('use move', function(name, move, card, active, roomname) {
+        rooms[[roomname]]['moves'].push({'username': name, 'move': move, 'card': card});
+        rooms[[roomname]]['activeCards'].push(active);
         rooms[[roomname]].history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
 
-        if (moves.length == 2) {
-            var damages = calculator.calculate(moves);
+        if (rooms[[roomname]]['moves'].length == 2) {
+            var damages = calculator.calculate(rooms[[roomname]]['moves']);
+            var active0 = rooms[[roomname]]['activeCards'][0];
+            var active1 = rooms[[roomname]]['activeCards'][1];
+            var player0 = rooms[[roomname]]['moves'][0].username;
+            var player1 = rooms[[roomname]]['moves'][1].username;
 
-            rooms[[roomname]]['hp'][[moves[0].username]][[activeCard[0]]].hp -= damages[0];
-            rooms[[roomname]]['hp'][[moves[1].username]][[activeCard[1]]].hp -= damages[1];
+            rooms[[roomname]]['hp'][[player0]][[active0]].hp -= damages[0];
+            rooms[[roomname]]['hp'][[player1]][[active1]].hp -= damages[1];
 
-            moves = [];
-            activeCard = [];
+            rooms[[roomname]]['moves'] = [];
+            rooms[[roomname]]['activeCards'] = [];
             io.to(roomname).emit('update', rooms[[roomname]]['hp'], rooms[[roomname]].history, rooms[[roomname]].turn);
             rooms[[roomname]].turn += 1;
             rooms[[roomname]].history = "";
@@ -83,9 +82,6 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function(){
         console.log(socket.username + ' has disconnected');
         delete usernames[socket.username];
-        moves = [];
-        activeCard = [];
-        hp = {};
         io.emit('users', usernames);
     });
 });
