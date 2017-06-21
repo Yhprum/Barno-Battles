@@ -10,7 +10,7 @@ var usernames = {};
 var rooms = {};
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/welcome.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/rules', function(req, res) {
@@ -82,8 +82,13 @@ io.on('connection', function(socket) {
             }
         } else {
             socket.leave(roomname);
-            //return to home page
+            io.to(usernames[socket.username]).emit('leave game');
         }
+    });
+
+    socket.on('update', function() {
+        io.emit('users', usernames);
+        io.emit('battles', rooms);
     });
 
     socket.on('disconnect', function(){

@@ -66,7 +66,7 @@ $(document).ready(function() {
         });
 
         socket.on('start game', function() {
-            $("#body").load("index.html", function() {
+            $("#body").load("game.html", function() {
                 // Instantiate game screen vars
                 canvas = document.getElementById("timer");
                 c = canvas.getContext('2d');
@@ -136,6 +136,12 @@ $(document).ready(function() {
             if (hp[[name]][[activeCard]].hp > 0 && hp[[opponent]][[opponentCard]].hp > 0) {
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             }
+        });
+
+        socket.on('leave game', function() {
+            $("#body").load("home.html", function() {
+                socket.emit('update');
+            });
         });
     });
 });
