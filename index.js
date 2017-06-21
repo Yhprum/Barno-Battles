@@ -13,15 +13,19 @@ var hp = {};
 var history = '';
 var turn = 1;
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
     res.sendFile(__dirname + '/welcome.html');
 });
 
-app.get('/game', function(req, res){
+app.get('/rules', function(req, res) {
+    res.sendFile(__dirname + '/rules.html');
+});
+
+app.get('/game', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/gandalf', function(req, res){
+app.get('/gandalf', function(req, res) {
     res.sendFile(__dirname + '/gandalf.html');
 });
 
