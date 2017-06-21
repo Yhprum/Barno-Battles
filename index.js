@@ -36,7 +36,7 @@ io.on('connection', function(socket) {
         io.to(usernames[[opponentName]]).emit('challenge', challenger);
     });
 
-    socket.on('accept', function(opponentName) {
+    socket.on('accept', function(opponentName, name) {
         io.to(usernames[[opponentName]]).emit('accepted challenge');
         rooms[[opponentName]] = {};
         rooms[[opponentName]]['hp'] = {};
@@ -44,12 +44,14 @@ io.on('connection', function(socket) {
         rooms[[opponentName]]['activeCards'] = [];
         rooms[[opponentName]]['moves'] = [];
         rooms[[opponentName]]['history'] = '';
+        rooms[[opponentName]]['players'] = [opponentName, name];
     });
 
     socket.on('join room', function(roomname) {
         socket.join(roomname);
         rooms[[roomname]]['hp'][[socket.username]] = {};
         io.to(usernames[socket.username]).emit('start game');
+        io.emit('battles', rooms);
     });
 
     socket.on('set hp', function(name, vals, roomname) {
@@ -57,32 +59,46 @@ io.on('connection', function(socket) {
     });
 
     socket.on('use move', function(name, move, card, active, roomname) {
-        rooms[[roomname]]['moves'].push({'username': name, 'move': move, 'card': card});
-        rooms[[roomname]]['activeCards'].push(active);
-        rooms[[roomname]].history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
+        if(rooms[[roomname]]) {
+            rooms[[roomname]]['moves'].push({'username': name, 'move': move, 'card': card});
+            rooms[[roomname]]['activeCards'].push(active);
+            rooms[[roomname]].history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
 
-        if (rooms[[roomname]]['moves'].length == 2) {
-            var damages = calculator.calculate(rooms[[roomname]]['moves']);
-            var active0 = rooms[[roomname]]['activeCards'][0];
-            var active1 = rooms[[roomname]]['activeCards'][1];
-            var player0 = rooms[[roomname]]['moves'][0].username;
-            var player1 = rooms[[roomname]]['moves'][1].username;
+            if (rooms[[roomname]]['moves'].length == 2) {
+                var damages = calculator.calculate(rooms[[roomname]]['moves']);
+                var active0 = rooms[[roomname]]['activeCards'][0];
+                var active1 = rooms[[roomname]]['activeCards'][1];
+                var player0 = rooms[[roomname]]['moves'][0].username;
+                var player1 = rooms[[roomname]]['moves'][1].username;
 
-            rooms[[roomname]]['hp'][[player0]][[active0]].hp -= damages[0];
-            rooms[[roomname]]['hp'][[player1]][[active1]].hp -= damages[1];
+                rooms[[roomname]]['hp'][[player0]][[active0]].hp -= damages[0];
+                rooms[[roomname]]['hp'][[player1]][[active1]].hp -= damages[1];
 
-            rooms[[roomname]]['moves'] = [];
-            rooms[[roomname]]['activeCards'] = [];
-            io.to(roomname).emit('update', rooms[[roomname]]['hp'], rooms[[roomname]].history, rooms[[roomname]].turn);
-            rooms[[roomname]].turn += 1;
-            rooms[[roomname]].history = "";
+                rooms[[roomname]]['moves'] = [];
+                rooms[[roomname]]['activeCards'] = [];
+                io.to(roomname).emit('update', rooms[[roomname]]['hp'], rooms[[roomname]].history, rooms[[roomname]].turn);
+                rooms[[roomname]].turn += 1;
+                rooms[[roomname]].history = "";
+            }
+        } else {
+            socket.leave(roomname);
+            //return to home page
         }
     });
 
     socket.on('disconnect', function(){
         console.log(socket.username + ' has disconnected');
         delete usernames[socket.username];
+        for (var room in rooms) {
+            if (rooms.hasOwnProperty(room)) {
+                if (socket.username == rooms[[room]].players[0] || socket.username == rooms[[room]].players[1]) {
+                    delete rooms[room];
+                    break;
+                }
+            }
+        }
         io.emit('users', usernames);
+        io.emit('battles', rooms);
     });
 });
 
