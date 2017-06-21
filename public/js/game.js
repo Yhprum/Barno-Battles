@@ -1,12 +1,5 @@
 //add game functions here
 
-try {
-    var socket = io();
-}
-catch (e) {
-    alert("Unable to connect with server");
-}
-
 var name;
 var opponentName;
 var activeCard;
@@ -26,9 +19,6 @@ $(document).ready(function() {
     var height = canvas.height;
     var i = width;
     var timer;
-
-    name = prompt("Pick a username");
-    socket.emit('login', name);
 
     $("#selections .panel").on("click", function(e) {
         if (e.target.classList.contains("card")) {

@@ -6,7 +6,7 @@ var path = require("path");
 
 var calculator = require("./calculator");
 
-var usernames = {}; // change to array? why tf am I using an object
+var usernames = {};
 var moves = [];
 var activeCard = [];
 var hp = {};
@@ -48,6 +48,11 @@ io.on('connection', function(socket) {
         io.to(usernames[[opponentName]]).emit('accepted challenge');
     });
 
+    socket.on('join room', function(roomname) {
+        socket.join(roomname);
+        io.to(roomname).emit('start game');
+    });
+
     socket.on('set hp', function(name, vals) {
         hp[[name]] = vals;
     });
@@ -77,6 +82,7 @@ io.on('connection', function(socket) {
         hp = {};
         history = '';
         turn = 1;
+        io.emit('users', usernames);
     });
 });
 

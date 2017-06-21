@@ -29,13 +29,17 @@ $(document).ready(function() {
         socket.on('challenge', function(opponentName) {
             $("#challenges").append("<li class='list-group-item'>" + opponentName + "<button id=ac" + opponentName + " style='float: right'>Accept</button></li>");
             $("#ac" + opponentName).on('click', function() {
-                socket.emit('accept', this.id.substring(4, this.id.length), name);
-                //socket.join(opponentName);
+                socket.emit('accept', this.id.substring(2, this.id.length), name);
+                socket.emit('join room', this.id.substring(2, this.id.length));
             });
         });
 
         socket.on('accepted challenge', function() {
-            //socket.join(name);
+            socket.emit('join room', name);
+        });
+
+        socket.on('start game', function() {
+            $("#body").load("index.html");
         });
     });
 });
