@@ -37,10 +37,15 @@ io.on('connection', function(socket) {
         socket.username = name;
         usernames[name] = socket.id;
         console.log(name + ' has connected');
-        // if (Object.keys(usernames).length == 2) {
-        //     io.emit('start', usernames);
-        // }
         io.emit('users', usernames);
+    });
+
+    socket.on('challenge', function(opponentName, challenger) {
+        io.to(usernames[[opponentName]]).emit('challenge', challenger);
+    });
+
+    socket.on('accept', function(opponentName) {
+        io.to(usernames[[opponentName]]).emit('accepted challenge');
     });
 
     socket.on('set hp', function(name, vals) {
