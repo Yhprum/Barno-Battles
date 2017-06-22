@@ -1,10 +1,6 @@
-.left {
-    float: left;
-}
+.left {float: left;}
 
-.right {
-    float: right;
-}
+.right {float: right;}
 
 .box {
     border: 1px solid #AAAAAA;

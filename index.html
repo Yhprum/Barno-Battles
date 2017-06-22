@@ -3,6 +3,7 @@
   <head>
     <title>Barno Battles!</title>
       <link href="css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/home.css" rel="stylesheet">
       <script src="/socket.io/socket.io.js"></script>
       <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   </head>
@@ -38,7 +39,14 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               Online Users
-              <button id="login" style="float: right">Log In</button>
+              <div id="loginDropdown" class="dropdown">
+                <button id="open">Log In</button>
+                <div id="loginMenu" class="dropdown-content panel">
+                  Username:
+                  <input id="username" type="text">
+                  <button id="login">Submit</button>
+                </div>
+              </div>
             </div>
             <div class="panel-body" >
               <ul id="online" class="list-group">

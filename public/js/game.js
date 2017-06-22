@@ -3,6 +3,7 @@ $(document).ready(function() {
     var roomname;
     var socket;
     var $login = $("#login");
+    var $usernameInput = $("#username");
     var selection = DEFAULT_SELECTION;
 
     var activeCard, opponentCard, timer;
@@ -11,12 +12,30 @@ $(document).ready(function() {
 
     var width, height, i;
 
+    $("#open").on('click', function() {
+        document.getElementById("loginMenu").classList.toggle("show");
+        $usernameInput.focus();
+    });
     $login.on('click', function() {
+        verify();
+    });
+    $usernameInput.on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            verify();
+        }
+    });
+
+    function verify() {
+        name = $usernameInput.val().trim();
+        if (name) {
+            $("#loginDropdown").remove();
+            start();
+        }
+    }
+
+    function start() {
         socket = io();
-        name = prompt("Pick a username");
         socket.emit('login', name);
-        $login.off('click');
-        $login.hide();
 
         socket.on('users', function(usernames) {
             $("#online").empty();
@@ -143,5 +162,5 @@ $(document).ready(function() {
                 socket.emit('update');
             });
         });
-    });
+    }
 });
