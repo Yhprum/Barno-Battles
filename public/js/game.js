@@ -7,6 +7,7 @@ $(document).ready(function() {
     var selection = DEFAULT_SELECTION;
 
     var activeCard, opponentCard, timer;
+    var $activeCard;
 
     var canvas, c, grd;
 
@@ -62,7 +63,7 @@ $(document).ready(function() {
                     var battleTitle = rooms[[room]].players[0] + " vs. " + rooms[[room]].players[1];
                     $("#battles").append("<li class='list-group-item'>" + battleTitle + "<button id='batl" + room + "' style='float: right'>Spectate</button></li>");
                     $("#batl" + room).on('click', function() {
-                        
+                        // spectate
                     });
                 }
             }
@@ -87,6 +88,7 @@ $(document).ready(function() {
         socket.on('start game', function() {
             $("#body").load("game.html", function() {
                 // Instantiate game screen vars
+                $activeCard = $("#activePlayer")[0];
                 canvas = document.getElementById("timer");
                 c = canvas.getContext('2d');
                 grd = c.createLinearGradient(-100,0,200,0);
@@ -99,8 +101,13 @@ $(document).ready(function() {
 
                 $("#selections .panel").on("click", function(e) {
                     if (e.target.classList.contains("card")) {
-                        selection = e.target.id;
-                        $("#nextMove")[0].innerText = "Switch to " + e.target.innerText;
+                        if (e.target.innerText == activeCard) {
+                            $("#nextMove")[0].innerText = e.target.innerText + " is already in battle!";
+                        } else {
+                            //selection = "no damage";
+                            selection = e.target.id;
+                            $("#nextMove")[0].innerText = "Switch to " + e.target.innerText;
+                        }
                     } else {
                         selection = e.target.id;
                         $("#nextMove")[0].innerText = "Use " + e.target.innerText;
@@ -125,6 +132,10 @@ $(document).ready(function() {
             c.fillRect(width - i, 0, i--, height);
             if (i < 0) { // timer runs out
                 window.clearInterval(timer);
+                if (selection.includes("card")) { // Switch cards
+                    activeCard = $("#" + selection)[0].innerText;
+                    $activeCard.innerText = activeCard;
+                }
 
                 var card = cards[activeCard];
 
