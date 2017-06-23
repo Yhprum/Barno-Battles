@@ -88,7 +88,7 @@ io.on('connection', function(socket) {
             }
         } else {
             socket.leave(roomname);
-            io.to(usernames[socket.username]).emit('leave game');
+            io.to(usernames[socket.username]).emit('leave game', "your opponent disconnected");
         }
     });
 
@@ -98,13 +98,17 @@ io.on('connection', function(socket) {
             io.to(usernames[[opponentName]]).emit('opponent switched', newActive, rooms[[roomname]]['hp']);
         } else {
             socket.leave(roomname);
-            io.to(usernames[socket.username]).emit('leave game');
+            io.to(usernames[socket.username]).emit('leave game', "your opponent disconnected");
         }
     });
 
     socket.on('update', function() {
         io.emit('users', usernames);
         io.emit('battles', rooms);
+    });
+
+    socket.on('game end', function(winner) {
+        io.to(usernames[winner]).emit('leave game', "You win!")
     });
 
     socket.on('disconnect', function(){

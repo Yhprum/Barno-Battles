@@ -120,4 +120,4 @@ function calculate(moves) {
     return damages;
 }
 
-module.exports.calculate = calculate;
+module.exports.calculate = calculate; //TODO: fix this, add other exports
