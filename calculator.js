@@ -10,7 +10,8 @@ function calculate(moves) {
     // temporary workaround
     if (move1.move.includes("card")) {
         move1.move = 'no damage';
-    } else if (move2.move.includes("card")) {
+    }
+    if (move2.move.includes("card")) {
         move2.move = 'no damage';
     }
 

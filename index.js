@@ -30,6 +30,7 @@ io.on('connection', function(socket) {
         usernames[name] = socket.id;
         console.log(name + ' has connected');
         io.emit('users', usernames);
+        io.emit('battles', rooms);
     });
 
     socket.on('challenge', function(opponentName, challenger) {
@@ -60,7 +61,7 @@ io.on('connection', function(socket) {
 
     socket.on('use move', function(name, move, card, active, roomname) {
         var cur = rooms[[roomname]]
-        if(rooms[[roomname]]) {
+        if(cur) {
             cur['moves'].push({'username': name, 'move': move, 'card': card});
             cur['activeCards'].push(active);
             cur.history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
@@ -85,6 +86,16 @@ io.on('connection', function(socket) {
                 cur.turn += 1;
                 cur.history = '';
             }
+        } else {
+            socket.leave(roomname);
+            io.to(usernames[socket.username]).emit('leave game');
+        }
+    });
+
+    socket.on('switch card', function(roomname, opponentName, newActive, fn) {
+        if (rooms[[roomname]]) {
+            fn(rooms[[roomname]]['hp']);
+            io.to(usernames[[opponentName]]).emit('opponent switched', newActive, rooms[[roomname]]['hp']);
         } else {
             socket.leave(roomname);
             io.to(usernames[socket.username]).emit('leave game');

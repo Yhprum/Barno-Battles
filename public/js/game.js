@@ -40,7 +40,7 @@ $(document).ready(function() {
         socket = io();
         socket.emit('login', name);
 
-        socket.on('users', function(usernames) {
+        socket.on('users', function(usernames) { // update user list
             $("#online").empty();
             for (var username in usernames) {
                 if (usernames.hasOwnProperty(username)) {
@@ -58,7 +58,7 @@ $(document).ready(function() {
             }
         });
 
-        socket.on('battles', function(rooms) {
+        socket.on('battles', function(rooms) { // update ongoing battles list
             $("#battles").empty();
             for (var room in rooms) {
                 if (rooms.hasOwnProperty(room)) {
@@ -66,6 +66,7 @@ $(document).ready(function() {
                     $("#battles").append("<li class='list-group-item'>" + battleTitle + "<button id='batl" + room + "' style='float: right'>Spectate</button></li>");
                     $("#batl" + room).on('click', function() {
                         // spectate
+                        alert("Currently not supported");
                     });
                 }
             }
@@ -106,14 +107,13 @@ $(document).ready(function() {
                     document.getElementById("card" + i).innerText = deck[i];
                 }
                 $activeCard.innerText = deck[0];
-                $activeOpponent.innerText = deck[0]; // change to get from opponent on game start
+                $activeOpponent.innerText = deck[0]; // TODO: change to get from opponent on game start
 
                 $("#selections .panel").on("click", function(e) {
                     if (e.target.classList.contains("card")) {
                         if (e.target.innerText == activeCard) {
                             $("#nextMove")[0].innerText = e.target.innerText + " is already in battle!";
                         } else {
-                            //selection = "no damage";
                             selection = e.target.id;
                             $("#nextMove")[0].innerText = "Switch to " + e.target.innerText;
                         }
@@ -143,7 +143,6 @@ $(document).ready(function() {
                 window.clearInterval(timer);
                 if (selection.includes("card")) { // Switch cards
                     activeCard = $("#" + selection)[0].innerText;
-                    //$activeCard.innerText = activeCard;
                 }
 
                 var card = cards[activeCard];
@@ -179,8 +178,45 @@ $(document).ready(function() {
             $("#opponentHP")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
             if (hp[[name]][[activeCard]].hp > 0 && hp[[opponent]][[activeOpponent]].hp > 0) {
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
+            } else { // card is defeated
+                if (hp[[name]][[activeCard]].hp <= 0) { // it's the player's card that is defeated
+                    // TODO: disable clicking on moves, create default selection
+                    $("#nextMove")[0].innerText = activeCard + " has been defeated!";
+                    timer = window.setInterval(switchCardTimer, SWITCH_TIMER_SPEED);
+                } else { // if it's the opponents card that is defeated, just wait
+                    $("#nextMove")[0].innerText = "Waiting for opponent...";
+                }
             }
         });
+
+        socket.on('opponent switched', function(newActive, hp) {
+            activeOpponent = newActive;
+            $activeOpponent.innerText = activeOpponent;
+            $("#opponentHP")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
+            timer = window.setInterval(updateTimer, TIMER_SPEED);
+        });
+
+        function switchCardTimer() {
+            c.clearRect(0, 0, width, height);
+            c.fillRect(width - i, 0, i--, height);
+            if (i < 0) { // timer runs out
+                window.clearInterval(timer);
+                if (selection.includes("card")) { // Switch cards
+                    activeCard = $("#" + selection)[0].innerText;
+                    $activeCard.innerText = activeCard;
+                } else { // if they didn't select a card
+                    // TODO: default switch?
+                }
+
+                socket.emit('switch card', roomname, opponent, activeCard, function(hp) {
+                    $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
+                });
+                selection = DEFAULT_SELECTION;
+                i = width;
+                $("#nextMove")[0].innerText = "Your next move is...";
+                timer = window.setInterval(updateTimer, TIMER_SPEED);
+            }
+        }
 
         socket.on('leave game', function() {
             $("#body").load("home.html", function() {
