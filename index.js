@@ -107,8 +107,12 @@ io.on('connection', function(socket) {
         io.emit('battles', rooms);
     });
 
-    socket.on('game end', function(winner) {
-        io.to(usernames[winner]).emit('leave game', "You win!")
+    socket.on('game end', function(roomname, winner) {
+        // io.clients(roomname).forEach(function(s) { FIX THIS
+        //     s.leave(roomname);
+        // });
+        io.to(usernames[winner]).emit('leave game', "You win!");
+        delete rooms[roomname];
     });
 
     socket.on('disconnect', function(){

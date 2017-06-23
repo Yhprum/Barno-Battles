@@ -8,7 +8,7 @@ $(document).ready(function() {
 
     // default deck for testing
     var deck = ["Yhprum", "Klinestife", "Jloysnenph", "MDao", "Synchron", "Wumpa"];
-    var canSwitch = [1, 1, 1, 1, 1, 1]; // value is 0 if it has 0 hp, indexes correspond to deck
+    var canSwitch = [1]//, 1, 1, 1, 1, 1]; // value is 0 if it has 0 hp, indexes correspond to deck
     var activeCard, activeOpponent, timer;
     var $activeCard, $activeOpponent;
 
@@ -185,7 +185,7 @@ $(document).ready(function() {
                     // also disble clicking on defeated cards
                     canSwitch[deck.indexOf(activeCard)] = 0;
                     if (canSwitch.indexOf(1) == -1) { // you lose!
-                        socket.emit('game end', opponent); // TODO: broadcast to room?
+                        socket.emit('game end', roomname, opponent); // TODO: broadcast to room?
                         alert("You lose!");
                         $("#body").load("home.html", function() { // TODO: both sockets need to leave the room
                             socket.emit('update');
