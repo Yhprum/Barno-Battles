@@ -153,7 +153,7 @@ $(document).ready(function() {
             }
         }
 
-        socket.on('update', function(hp, history, turn) {
+        socket.on('update', function(hp, history, turn, cardsByPlayer) {
             let row = document.createElement("tr");
             let text = document.createElement("td");
             text.innerHTML = '<p><b class="turn">Turn ' + turn + '<b></p>';
@@ -166,6 +166,8 @@ $(document).ready(function() {
             row.appendChild(text);
 
             $("#history")[0].appendChild(row);
+
+            // populate active cards in game area
 
             $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
             $("#opponentHP")[0].innerText = hp[[opponent]][[opponentCard]].hp;
