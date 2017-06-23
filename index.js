@@ -43,6 +43,7 @@ io.on('connection', function(socket) {
         rooms[[opponentName]]['turn'] = 1;
         rooms[[opponentName]]['activeCards'] = [];
         rooms[[opponentName]]['moves'] = [];
+        rooms[[opponentName]]['history'] = '';
         rooms[[opponentName]]['players'] = [opponentName, name];
     });
 
@@ -58,30 +59,31 @@ io.on('connection', function(socket) {
     });
 
     socket.on('use move', function(name, move, card, active, roomname) {
+        var cur = rooms[[roomname]]
         if(rooms[[roomname]]) {
-            rooms[[roomname]]['moves'].push({'username': name, 'move': move, 'card': card});
-            rooms[[roomname]]['activeCards'].push(active);
-            rooms[[roomname]].history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
+            cur['moves'].push({'username': name, 'move': move, 'card': card});
+            cur['activeCards'].push(active);
+            cur.history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
 
             if (rooms[[roomname]]['moves'].length == 2) {
                 let damages = calculator.calculate(rooms[[roomname]]['moves']);
-                let active0 = rooms[[roomname]]['activeCards'][0];
-                let active1 = rooms[[roomname]]['activeCards'][1];
-                let player0 = rooms[[roomname]]['moves'][0].username;
-                let player1 = rooms[[roomname]]['moves'][1].username;
+                let active0 = cur['activeCards'][0];
+                let active1 = cur['activeCards'][1];
+                let player0 = cur['moves'][0].username;
+                let player1 = cur['moves'][1].username;
                 let cardsByPlayer = {
-                    [rooms[[roomname]]['moves'][0].username]: rooms[[roomname]]['activeCards'][0],
-                    [rooms[[roomname]]['moves'][1].username]: rooms[[roomname]]['activeCards'][1]
+                    [cur['moves'][0].username]: cur['activeCards'][0],
+                    [cur['moves'][1].username]: cur['activeCards'][1]
                 }
 
-                rooms[[roomname]]['hp'][[player0]][[active0]].hp -= damages[0];
-                rooms[[roomname]]['hp'][[player1]][[active1]].hp -= damages[1];
+                cur['hp'][[player0]][[active0]].hp -= damages[0];
+                cur['hp'][[player1]][[active1]].hp -= damages[1];
 
-                rooms[[roomname]]['moves'] = [];
-                rooms[[roomname]]['activeCards'] = [];
-                io.to(roomname).emit('update', rooms[[roomname]]['hp'], rooms[[roomname]].history, rooms[[roomname]].turn, cardsByPlayer);
-                rooms[[roomname]].turn += 1;
-                rooms[[roomname]].history = "";
+                cur['moves'] = [];
+                cur['activeCards'] = [];
+                io.to(roomname).emit('update', cur['hp'], cur.history, cur.turn, cardsByPlayer);
+                cur.turn += 1;
+                cur.history = '';
             }
         } else {
             socket.leave(roomname);

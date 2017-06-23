@@ -159,7 +159,7 @@ $(document).ready(function() {
         socket.on('update', function(hp, history, turn, cardsByPlayer) {
             let row = document.createElement("tr");
             let text = document.createElement("td");
-            text.innerHTML = '<p><b class="turn">Turn ' + turn + '<b></p>';
+            text.innerHTML = '<b class="turn">Turn ' + turn + '</b>';
             row.appendChild(text);
             $("#history")[0].appendChild(row);
 
