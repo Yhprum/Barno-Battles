@@ -3,7 +3,7 @@ function calculate(moves) {
     var move1 = moves[0];
     var move2 = moves[1];
     // move# = {'username': name, 'move': move, 'card': card}
-    // move#.move can be: fast, slow, defend, anticipate, ability1, abililty2
+    // move#.move can be: fast, slow, defend, anticipate, ability1, abililty2, no damage
     // move#.card = {'hp': hp, 'atk': atk, 'def': def}
     var damageTo1, damageTo2;
 

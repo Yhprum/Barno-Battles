@@ -101,7 +101,7 @@ $(document).ready(function() {
                 height = canvas.height;
                 i = width;
 
-                for (let i = 0; i < 6; i++) {
+                for (let i = 0; i < 6; i++) { // populate your cards
                     document.getElementById("card" + i).innerText = deck[i];
                 }
 
@@ -140,7 +140,7 @@ $(document).ready(function() {
                 window.clearInterval(timer);
                 if (selection.includes("card")) { // Switch cards
                     activeCard = $("#" + selection)[0].innerText;
-                    $activeCard.innerText = activeCard;
+                    //$activeCard.innerText = activeCard;
                 }
 
                 var card = cards[activeCard];
@@ -154,14 +154,14 @@ $(document).ready(function() {
         }
 
         socket.on('update', function(hp, history, turn) {
-            var row = document.createElement("tr");
-            var text = document.createElement("td");
+            let row = document.createElement("tr");
+            let text = document.createElement("td");
             text.innerHTML = '<p><b class="turn">Turn ' + turn + '<b></p>';
             row.appendChild(text);
             $("#history")[0].appendChild(row);
 
-            var row = document.createElement("tr");
-            var text = document.createElement("td");
+            row = document.createElement("tr");
+            text = document.createElement("td");
             text.innerHTML = history;
             row.appendChild(text);
 

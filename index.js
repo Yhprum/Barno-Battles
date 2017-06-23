@@ -43,7 +43,6 @@ io.on('connection', function(socket) {
         rooms[[opponentName]]['turn'] = 1;
         rooms[[opponentName]]['activeCards'] = [];
         rooms[[opponentName]]['moves'] = [];
-        rooms[[opponentName]]['history'] = '';
         rooms[[opponentName]]['players'] = [opponentName, name];
     });
 
@@ -62,23 +61,27 @@ io.on('connection', function(socket) {
         if(rooms[[roomname]]) {
             rooms[[roomname]]['moves'].push({'username': name, 'move': move, 'card': card});
             rooms[[roomname]]['activeCards'].push(active);
-            rooms[[roomname]].history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
+            let history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
 
             if (rooms[[roomname]]['moves'].length == 2) {
-                var damages = calculator.calculate(rooms[[roomname]]['moves']);
-                var active0 = rooms[[roomname]]['activeCards'][0];
-                var active1 = rooms[[roomname]]['activeCards'][1];
-                var player0 = rooms[[roomname]]['moves'][0].username;
-                var player1 = rooms[[roomname]]['moves'][1].username;
+                let damages = calculator.calculate(rooms[[roomname]]['moves']);
+                let active0 = rooms[[roomname]]['activeCards'][0];
+                let active1 = rooms[[roomname]]['activeCards'][1];
+                let player0 = rooms[[roomname]]['moves'][0].username;
+                let player1 = rooms[[roomname]]['moves'][1].username;
+                let cardsByPlayer = {
+                    [rooms[[roomname]]['moves'][0].username]: rooms[[roomname]]['activeCards'][0],
+                    [rooms[[roomname]]['moves'][1].username]: rooms[[roomname]]['activeCards'][1]
+                }
 
                 rooms[[roomname]]['hp'][[player0]][[active0]].hp -= damages[0];
                 rooms[[roomname]]['hp'][[player1]][[active1]].hp -= damages[1];
 
                 rooms[[roomname]]['moves'] = [];
                 rooms[[roomname]]['activeCards'] = [];
-                io.to(roomname).emit('update', rooms[[roomname]]['hp'], rooms[[roomname]].history, rooms[[roomname]].turn);
+                io.to(roomname).emit('update', rooms[[roomname]]['hp'], history, rooms[[roomname]].turn, cardsByPlayer);
                 rooms[[roomname]].turn += 1;
-                rooms[[roomname]].history = "";
+                //history = "";
             }
         } else {
             socket.leave(roomname);
