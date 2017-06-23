@@ -61,7 +61,7 @@ io.on('connection', function(socket) {
         if(rooms[[roomname]]) {
             rooms[[roomname]]['moves'].push({'username': name, 'move': move, 'card': card});
             rooms[[roomname]]['activeCards'].push(active);
-            let history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
+            rooms[[roomname]].history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
 
             if (rooms[[roomname]]['moves'].length == 2) {
                 let damages = calculator.calculate(rooms[[roomname]]['moves']);
@@ -79,9 +79,9 @@ io.on('connection', function(socket) {
 
                 rooms[[roomname]]['moves'] = [];
                 rooms[[roomname]]['activeCards'] = [];
-                io.to(roomname).emit('update', rooms[[roomname]]['hp'], history, rooms[[roomname]].turn, cardsByPlayer);
+                io.to(roomname).emit('update', rooms[[roomname]]['hp'], rooms[[roomname]].history, rooms[[roomname]].turn, cardsByPlayer);
                 rooms[[roomname]].turn += 1;
-                //history = "";
+                rooms[[roomname]].history = "";
             }
         } else {
             socket.leave(roomname);

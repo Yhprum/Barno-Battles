@@ -8,8 +8,8 @@ $(document).ready(function() {
 
     // default deck for testing
     var deck = ["Yhprum", "Klinestife", "Jloysnenph", "MDao", "Synchron", "Wumpa"];
-    var activeCard, opponentCard, timer;
-    var $activeCard;
+    var activeCard, activeOpponent, timer;
+    var $activeCard, $activeOpponent;
 
     var canvas, c, grd;
 
@@ -91,6 +91,7 @@ $(document).ready(function() {
             $("#body").load("game.html", function() {
                 // Instantiate game screen vars
                 $activeCard = $("#activePlayer")[0];
+                $activeOpponent = $("#activeOpponent")[0];
                 canvas = document.getElementById("timer");
                 c = canvas.getContext('2d');
                 grd = c.createLinearGradient(-100,0,200,0);
@@ -104,6 +105,8 @@ $(document).ready(function() {
                 for (let i = 0; i < 6; i++) { // populate your cards
                     document.getElementById("card" + i).innerText = deck[i];
                 }
+                $activeCard.innerText = deck[0];
+                $activeOpponent.innerText = deck[0]; // change to get from opponent on game start
 
                 $("#selections .panel").on("click", function(e) {
                     if (e.target.classList.contains("card")) {
@@ -126,9 +129,9 @@ $(document).ready(function() {
                 });
                 socket.emit('set hp', name, hpValues, roomname);
                 activeCard = $("#activePlayer")[0].innerText;
-                opponentCard = $("#activeOpponent")[0].innerText;
+                activeOpponent = $("#activeOpponent")[0].innerText;
                 $("#playerHP")[0].innerText = cards[[activeCard]].hp;
-                $("#opponentHP")[0].innerText = cards[[opponentCard]].hp;
+                $("#opponentHP")[0].innerText = cards[[activeOpponent]].hp;
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             });
         });
@@ -168,10 +171,13 @@ $(document).ready(function() {
             $("#history")[0].appendChild(row);
 
             // populate active cards in game area
+            activeOpponent = cardsByPlayer[[opponent]];
+            $activeCard.innerText = activeCard;
+            $activeOpponent.innerText = activeOpponent;
 
             $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
-            $("#opponentHP")[0].innerText = hp[[opponent]][[opponentCard]].hp;
-            if (hp[[name]][[activeCard]].hp > 0 && hp[[opponent]][[opponentCard]].hp > 0) {
+            $("#opponentHP")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
+            if (hp[[name]][[activeCard]].hp > 0 && hp[[opponent]][[activeOpponent]].hp > 0) {
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             }
         });
