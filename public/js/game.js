@@ -6,6 +6,8 @@ $(document).ready(function() {
     var $usernameInput = $("#username");
     var selection = DEFAULT_SELECTION;
 
+    // default deck for testing
+    var deck = ["Yhprum", "Klinestife", "Jloysnenph", "MDao", "Synchron", "Wumpa"];
     var activeCard, opponentCard, timer;
     var $activeCard;
 
@@ -30,11 +32,11 @@ $(document).ready(function() {
         name = $usernameInput.val().trim();
         if (name) {
             $("#loginDropdown").remove();
-            start();
+            login();
         }
     }
 
-    function start() {
+    function login() {
         socket = io();
         socket.emit('login', name);
 
@@ -98,6 +100,10 @@ $(document).ready(function() {
                 width = canvas.width;
                 height = canvas.height;
                 i = width;
+
+                for (let i = 0; i < 6; i++) {
+                    document.getElementById("card" + i).innerText = deck[i];
+                }
 
                 $("#selections .panel").on("click", function(e) {
                     if (e.target.classList.contains("card")) {

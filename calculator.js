@@ -8,9 +8,9 @@ function calculate(moves) {
     var damageTo1, damageTo2;
 
     // temporary workaround
-    if (move1.move.contains("card")) {
+    if (move1.move.includes("card")) {
         move1.move = 'no damage';
-    } else if (move2.move.contains("card")) {
+    } else if (move2.move.includes("card")) {
         move2.move = 'no damage';
     }
 
