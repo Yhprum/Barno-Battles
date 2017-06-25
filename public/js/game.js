@@ -8,7 +8,7 @@ $(document).ready(function() {
 
     // default deck for testing
     var deck = ["Yhprum", "Klinestife", "Jloysnenph", "MDao", "Synchron", "Wumpa"];
-    var canSwitch = [1]//, 1, 1, 1, 1, 1]; // value is 0 if it has 0 hp, indexes correspond to deck
+    var canSwitch = [1, 1, 1, 1, 1, 1]; // value is 0 if it has 0 hp, indexes correspond to deck
     var activeCard, activeOpponent, timer;
     var $activeCard, $activeOpponent;
 
@@ -92,8 +92,8 @@ $(document).ready(function() {
         socket.on('start game', function() {
             $("#body").load("game.html", function() {
                 // Instantiate game screen vars
-                $activeCard = $("#activePlayer")[0];
-                $activeOpponent = $("#activeOpponent")[0];
+                $activeCard = document.getElementById('activePlayer');
+                $activeOpponent = document.getElementById('activeOpponent');
                 canvas = document.getElementById("timer");
                 c = canvas.getContext('2d');
                 grd = c.createLinearGradient(-100,0,200,0);
@@ -105,18 +105,27 @@ $(document).ready(function() {
                 i = width;
 
                 for (let i = 0; i < 6; i++) { // populate your cards
-                    document.getElementById("card" + i).innerText = deck[i];
+                    $("#card" + i).attr({
+                        src: 'cards/' + deck[i] + '.png',
+                        name: deck[i]
+                    });
                 }
-                $activeCard.innerText = deck[0];
-                $activeOpponent.innerText = deck[0]; // TODO: change to get from opponent on game start
+                $("#activePlayer").attr({
+                    src: 'cards/' + deck[0] + '.png',
+                    name: deck[0]
+                });
+                $("#activeOpponent").attr({ // TODO: change to get from opponent on game start
+                    src: 'cards/' + deck[0] + '.png',
+                    name: deck[0]
+                });
 
                 $("#selections .panel").on("click", function(e) {
-                    if (e.target.classList.contains("card")) { // TODO: add text for defeated cards
-                        if (e.target.innerText == activeCard) {
-                            $("#nextMove")[0].innerText = e.target.innerText + " is already in battle!";
+                    if (e.target.id.includes("card")) { // TODO: add text for defeated cards
+                        if (e.target.name == activeCard) {
+                            $("#nextMove")[0].innerText = e.target.name + " is already in battle!";
                         } else {
                             selection = e.target.id;
-                            $("#nextMove")[0].innerText = "Switch to " + e.target.innerText;
+                            $("#nextMove")[0].innerText = "Switch to " + e.target.name;
                         }
                     } else {
                         selection = e.target.id;
@@ -125,12 +134,12 @@ $(document).ready(function() {
                 });
 
                 var hpValues = {};
-                $(".cards .card").each(function() {
-                    hpValues[[this.innerText]] = {"hp": cards[this.innerText].hp};
+                $(".cards .card img").each(function() {
+                    hpValues[[this.name]] = {"hp": cards[this.name].hp};
                 });
                 socket.emit('set hp', name, hpValues, roomname);
-                activeCard = $("#activePlayer")[0].innerText;
-                activeOpponent = $("#activeOpponent")[0].innerText;
+                activeCard = $activeCard.name;
+                activeOpponent = $activeOpponent.name;
                 $("#playerHP")[0].innerText = cards[[activeCard]].hp;
                 $("#opponentHP")[0].innerText = cards[[activeOpponent]].hp;
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
@@ -143,7 +152,7 @@ $(document).ready(function() {
             if (i < 0) { // timer runs out
                 window.clearInterval(timer);
                 if (selection.includes("card")) { // Switch cards
-                    activeCard = $("#" + selection)[0].innerText;
+                    activeCard = $("#" + selection)[0].name;
                 }
 
                 var card = cards[activeCard];
@@ -172,8 +181,14 @@ $(document).ready(function() {
 
             // populate active cards in game area
             activeOpponent = cardsByPlayer[[opponent]];
-            $activeCard.innerText = activeCard;
-            $activeOpponent.innerText = activeOpponent;
+            $("#activePlayer").attr({
+                src: 'cards/' + activeCard + '.png',
+                name: activeCard
+            });
+            $("#activeOpponent").attr({
+                src: 'cards/' + activeOpponent + '.png',
+                name: activeOpponent
+            });
 
             $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
             $("#opponentHP")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
@@ -202,7 +217,10 @@ $(document).ready(function() {
 
         socket.on('opponent switched', function(newActive, hp) {
             activeOpponent = newActive;
-            $activeOpponent.innerText = activeOpponent;
+            $("#activeOpponent").attr({
+                src: 'cards/' + activeOpponent + '.png',
+                name: activeOpponent
+            });
             $("#opponentHP")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
             timer = window.setInterval(updateTimer, TIMER_SPEED);
         });
@@ -221,8 +239,11 @@ $(document).ready(function() {
                     }
                 }
                 // switch cards
-                activeCard = $("#" + selection)[0].innerText;
-                $activeCard.innerText = activeCard;
+                activeCard = $("#" + selection)[0].name;
+                $("#activePlayer").attr({
+                    src: 'cards/' + activeCard + '.png',
+                    name: activeCard
+                });
 
                 socket.emit('switch card', roomname, opponent, activeCard, function(hp) {
                     $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
