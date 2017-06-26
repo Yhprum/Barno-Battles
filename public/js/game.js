@@ -115,6 +115,7 @@ $(document).ready(function() {
                         src: 'cards/' + deck[i] + '.png',
                         name: deck[i]
                     });
+                    document.getElementById('hp' + i).innerText = cards[deck[i]].hp;
                 }
                 $("#activePlayer").attr({
                     src: 'cards/' + deck[0] + '.png',
@@ -146,8 +147,8 @@ $(document).ready(function() {
                 socket.emit('set hp', name, hpValues, roomname);
                 activeCard = $activeCard.name;
                 activeOpponent = $activeOpponent.name;
-                $("#playerHP")[0].innerText = cards[[activeCard]].hp;
-                $("#opponentHP")[0].innerText = cards[[activeOpponent]].hp;
+                $("#hpPlayer")[0].innerText = cards[[activeCard]].hp;
+                $("#hpOpponent")[0].innerText = cards[[activeOpponent]].hp;
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             });
         });
@@ -196,8 +197,9 @@ $(document).ready(function() {
                 name: activeOpponent
             });
 
-            $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
-            $("#opponentHP")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
+            $("#hpPlayer")[0].innerText = hp[[name]][[activeCard]].hp;
+            $("#hpOpponent")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
+            document.getElementById('hp' + deck.indexOf(activeCard)).innerText = hp[[name]][[activeCard]].hp;
             if (hp[[name]][[activeCard]].hp > 0 && hp[[opponent]][[activeOpponent]].hp > 0) {
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             } else { // card is defeated
@@ -227,7 +229,7 @@ $(document).ready(function() {
                 src: 'cards/' + activeOpponent + '.png',
                 name: activeOpponent
             });
-            $("#opponentHP")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
+            $("#hpOpponent")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
             timer = window.setInterval(updateTimer, TIMER_SPEED);
         });
 
@@ -252,7 +254,7 @@ $(document).ready(function() {
                 });
 
                 socket.emit('switch card', roomname, opponent, activeCard, function(hp) {
-                    $("#playerHP")[0].innerText = hp[[name]][[activeCard]].hp;
+                    $("#hpPlayer")[0].innerText = hp[[name]][[activeCard]].hp;
                 });
                 selection = DEFAULT_SELECTION;
                 i = width;

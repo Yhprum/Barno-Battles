@@ -85,3 +85,12 @@ body .panel:hover {
 .turn {
     font-size: 150%;
 }
+
+.hp {
+    position: absolute;
+    font-weight: bold;
+    font-size: 120%;
+    z-index: 1;
+    margin-left: 75px;
+    margin-top: 3px;
+}
