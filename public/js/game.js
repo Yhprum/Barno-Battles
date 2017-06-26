@@ -51,6 +51,12 @@ $(document).ready(function() {
                             opponent = this.id.substring(4, this.id.length);
                             socket.emit('challenge', opponent, name);
                             $("#chal" + opponent).hide();
+                            $("#challenges").append("<li class='list-group-item'>To: " + opponent + "<button id=cancel" + opponent + " style='float: right'>Cancel</button></li>");
+                            $("#cancel" + opponent).on('click', function() {
+                                this.parentNode.remove();
+                                $("#chal" + opponent).show();
+                                socket.emit('cancel challenge', opponent, name);
+                            });
                         });
                     } else {
                         $("#online").append("<li class='list-group-item'>" + username + "</li>")
