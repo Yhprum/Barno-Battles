@@ -134,16 +134,22 @@ $(document).ready(function() {
                 });
 
                 $("#selections .panel").on("click", function(e) {
-                    if (e.target.id.includes("card")) { // TODO: add text for defeated cards
-                        if (e.target.name == activeCard) {
-                            nextMove.innerText = e.target.name + " is already in battle!";
-                        } else {
-                            selection = e.target.id;
-                            nextMove.innerText = "Switch to " + e.target.name;
-                        }
+                    selection = e.target.id;
+                    nextMove.innerText = "Use " + e.target.innerText;
+                });
+
+                $("#selections .card").on("click", function(e) {
+                    let target = e.target;
+                    if (!target.id.includes("card")) {
+                        target = target.parentElement.lastElementChild;
+                    }
+                    if (target.name == activeCard) {
+                        nextMove.innerText = target.name + " is already in battle!";
+                    } else if (!canSwitch[target.id.charAt(4)]) {
+                        nextMove.innerText = target.name + " can no longer battle!"
                     } else {
-                        selection = e.target.id;
-                        nextMove.innerText = "Use " + e.target.innerText;
+                        selection = target.id;
+                        nextMove.innerText = "Switch to " + target.name;
                     }
                 });
 
@@ -212,7 +218,7 @@ $(document).ready(function() {
             } else { // card is defeated
                 if (hp[[name]][[activeCard]].hp <= 0) { // it's the player's card that is defeated
                     // TODO: disable clicking on moves, create default selection
-                    // also disble clicking on defeated cards
+                    // also disble clicking on defeated cards/remove css stuff
                     canSwitch[deck.indexOf(activeCard)] = 0;
                     if (canSwitch.indexOf(1) == -1) { // you lose!
                         socket.emit('game end', roomname, opponent); // TODO: broadcast to room?

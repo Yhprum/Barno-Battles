@@ -45,6 +45,12 @@
 
 .cards {
     clear: both;
+    cursor: pointer;
+}
+
+.card img{
+    border:1px solid #000000;
+    border-radius: 16px;
 }
 
 .cards img:hover {
