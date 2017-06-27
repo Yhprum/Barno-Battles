@@ -47,6 +47,10 @@
     clear: both;
 }
 
+.cards img:hover {
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+}
+
 body .card {
     margin-top: 3px;
     margin-left: 3px;
@@ -54,7 +58,6 @@ body .card {
     margin-bottom: 10px;
     width: 100px;
     height: 160px;
-    cursor: pointer;
 }
 
 .actions {
@@ -93,4 +96,22 @@ body .panel:hover {
     z-index: 1;
     margin-left: 75px;
     margin-top: 3px;
+}
+
+.atk {
+    position: absolute;
+    font-weight: bold;
+    font-size: 120%;
+    z-index: 1;
+    margin-left: 3px;
+    margin-top: 108px;
+}
+
+.def {
+    position: absolute;
+    font-weight: bold;
+    font-size: 120%;
+    z-index: 1;
+    margin-left: 77px;
+    margin-top: 108px;
 }

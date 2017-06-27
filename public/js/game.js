@@ -121,6 +121,8 @@ $(document).ready(function() {
                         name: deck[i]
                     });
                     document.getElementById('hp' + i).innerText = cards[deck[i]].hp;
+                    document.getElementById('atk' + i).innerText = cards[deck[i]].atk;
+                    document.getElementById('def' + i).innerText = cards[deck[i]].def;
                 }
                 $("#activePlayer").attr({
                     src: 'cards/' + deck[0] + '.png',
