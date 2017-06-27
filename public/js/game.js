@@ -11,6 +11,8 @@ $(document).ready(function() {
     var canSwitch = [1, 1, 1, 1, 1, 1]; // value is 0 if it has 0 hp, indexes correspond to deck
     var activeCard, activeOpponent, timer;
     var $activeCard, $activeOpponent;
+    var hpPlayer, hpOpponent;
+    var nextMove;
 
     var canvas, c, grd;
 
@@ -100,6 +102,9 @@ $(document).ready(function() {
                 // Instantiate game screen vars
                 $activeCard = document.getElementById('activePlayer');
                 $activeOpponent = document.getElementById('activeOpponent');
+                hpPlayer = document.getElementById('hpPlayer');
+                hpOpponent = document.getElementById('hpOpponent');
+                nextMove = document.getElementById('nextMove');
                 canvas = document.getElementById("timer");
                 c = canvas.getContext('2d');
                 grd = c.createLinearGradient(-100,0,200,0);
@@ -129,14 +134,14 @@ $(document).ready(function() {
                 $("#selections .panel").on("click", function(e) {
                     if (e.target.id.includes("card")) { // TODO: add text for defeated cards
                         if (e.target.name == activeCard) {
-                            $("#nextMove")[0].innerText = e.target.name + " is already in battle!";
+                            nextMove.innerText = e.target.name + " is already in battle!";
                         } else {
                             selection = e.target.id;
-                            $("#nextMove")[0].innerText = "Switch to " + e.target.name;
+                            nextMove.innerText = "Switch to " + e.target.name;
                         }
                     } else {
                         selection = e.target.id;
-                        $("#nextMove")[0].innerText = "Use " + e.target.innerText;
+                        nextMove.innerText = "Use " + e.target.innerText;
                     }
                 });
 
@@ -147,8 +152,8 @@ $(document).ready(function() {
                 socket.emit('set hp', name, hpValues, roomname);
                 activeCard = $activeCard.name;
                 activeOpponent = $activeOpponent.name;
-                $("#hpPlayer")[0].innerText = cards[[activeCard]].hp;
-                $("#hpOpponent")[0].innerText = cards[[activeOpponent]].hp;
+                hpPlayer.innerText = cards[[activeCard]].hp;
+                hpOpponent.innerText = cards[[activeOpponent]].hp;
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             });
         });
@@ -168,7 +173,7 @@ $(document).ready(function() {
 
                 selection = DEFAULT_SELECTION;
                 i = width;
-                $("#nextMove")[0].innerText = "Your next move is...";
+                nextMove.innerText = "Your next move is...";
             }
         }
 
@@ -197,8 +202,8 @@ $(document).ready(function() {
                 name: activeOpponent
             });
 
-            $("#hpPlayer")[0].innerText = hp[[name]][[activeCard]].hp;
-            $("#hpOpponent")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
+            hpPlayer.innerText = hp[[name]][[activeCard]].hp;
+            hpOpponent.innerText = hp[[opponent]][[activeOpponent]].hp;
             document.getElementById('hp' + deck.indexOf(activeCard)).innerText = hp[[name]][[activeCard]].hp;
             if (hp[[name]][[activeCard]].hp > 0 && hp[[opponent]][[activeOpponent]].hp > 0) {
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
@@ -214,11 +219,11 @@ $(document).ready(function() {
                             socket.emit('update');
                         });
                     } else {
-                        $("#nextMove")[0].innerText = activeCard + " has been defeated!";
+                        nextMove.innerText = activeCard + " has been defeated!";
                         timer = window.setInterval(switchCardTimer, SWITCH_TIMER_SPEED);
                     }
                 } else { // if it's the opponents card that is defeated, just wait
-                    $("#nextMove")[0].innerText = "Waiting for opponent...";
+                    nextMove.innerText = "Waiting for opponent...";
                 }
             }
         });
@@ -229,7 +234,7 @@ $(document).ready(function() {
                 src: 'cards/' + activeOpponent + '.png',
                 name: activeOpponent
             });
-            $("#hpOpponent")[0].innerText = hp[[opponent]][[activeOpponent]].hp;
+            hpOpponent.innerText = hp[[opponent]][[activeOpponent]].hp;
             timer = window.setInterval(updateTimer, TIMER_SPEED);
         });
 
@@ -254,11 +259,11 @@ $(document).ready(function() {
                 });
 
                 socket.emit('switch card', roomname, opponent, activeCard, function(hp) {
-                    $("#hpPlayer")[0].innerText = hp[[name]][[activeCard]].hp;
+                    hpPlayer.innerText = hp[[name]][[activeCard]].hp;
                 });
                 selection = DEFAULT_SELECTION;
                 i = width;
-                $("#nextMove")[0].innerText = "Your next move is...";
+                nextMove.innerText = "Your next move is...";
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             }
         }

@@ -1,5 +1,5 @@
 
-function calculate(moves) {
+module.exports.calculate = function(moves) {
     var move1 = moves[0];
     var move2 = moves[1];
     // move# = {'username': name, 'move': move, 'card': card}
@@ -119,5 +119,3 @@ function calculate(moves) {
     damages[1] = damageTo2;
     return damages;
 }
-
-module.exports.calculate = calculate; //TODO: fix this, add other exports
