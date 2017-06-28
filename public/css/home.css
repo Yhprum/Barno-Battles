@@ -18,3 +18,10 @@
 }
 
 .show {display:block;}
+
+#deckbuilder {
+    top: 70px;
+    right: 70px;
+    left: 70px;
+    overflow: visible;
+}
