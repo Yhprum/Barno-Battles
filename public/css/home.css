@@ -36,3 +36,17 @@
     margin: 5% auto;
     width: 60%;
 }
+
+#draggableCards {
+    display: inline-block;
+}
+
+#draggableCards li {
+    float: left;
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 160px;
+}

@@ -6,6 +6,7 @@
       <link href="css/home.css" rel="stylesheet">
       <script src="/socket.io/socket.io.js"></script>
       <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+      <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   </head>
   <body>
     <div class="navbar navbar-default navbar-static-top">
@@ -81,14 +82,14 @@
     <button onclick="document.getElementById('deckbuilder').style.display = 'block'">Build Deck</button>
     <div class="modal fade in" id="deckbuilder">
       <div class="modal-content">
-        <div class="modal-body" align="center">
-          <img src="cards/Yhprum.png">
-          <img src="cards/Klinestife.png">
-          <img src="cards/Jloysnenph.png">
-          <img src="cards/MDao.png">
-          <img src="cards/Synchron.png">
-          <img src="cards/Wumpa.png">
-        </div>
+        <ul class="list-unstyled" id="draggableCards">
+          <li><img src="cards/Yhprum.png"></li>
+          <li><img src="cards/Klinestife.png"></li>
+          <li><img src="cards/Jloysnenph.png"></li>
+          <li><img src="cards/MDao.png"></li>
+          <li><img src="cards/Synchron.png"></li>
+          <li><img src="cards/Wumpa.png"></li>
+        </ul>
       </div>
     </div>
   </body>

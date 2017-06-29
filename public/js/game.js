@@ -18,6 +18,16 @@ $(document).ready(function() {
 
     var width, height, i;
 
+    var drag = $("#draggableCards");
+    drag.sortable({
+        update: function() {
+            $('#draggableCards img', drag).each(function(index, elem) {
+                var $listItem = $(elem),
+                    newIndex = $listItem.index();
+            });
+        }
+    });
+
     $("#open").on('click', function() {
         document.getElementById("loginMenu").classList.toggle("show");
         $usernameInput.focus();
