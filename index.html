@@ -23,9 +23,20 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="rules">Rules</a></li>
+            <li><a href="gandalf">About</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="gandalf">About</a></li>
+            <li>
+              <div class="dropdown">
+                <button id="headerButton" type="button" data-toggle="dropdown">Log In</button>
+                <ul class="dropdown-menu">
+                  <li id="headerDropdown">Username:
+                    <input id="username" type="text">
+                    <button id="login">Submit</button>
+                  </li>
+                </ul>
+              </div>
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -40,14 +51,6 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               Online Users
-              <div id="loginDropdown" class="dropdown">
-                <button id="open">Log In</button>
-                <div id="loginMenu" class="dropdown-content panel">
-                  Username:
-                  <input id="username" type="text">
-                  <button id="login">Submit</button>
-                </div>
-              </div>
             </div>
             <div class="panel-body" >
               <ul id="online" class="list-group">
@@ -79,21 +82,23 @@
         </div>
       </div>
     </div>
-    <button onclick="document.getElementById('deckbuilder').style.display = 'block'">Build Deck</button>
-    <div class="modal fade in" id="deckbuilder">
-      <div class="modal-content">
-        <ul class="list-unstyled" id="draggableCards">
-          <li><img src="cards/Yhprum.png"></li>
-          <li><img src="cards/Klinestife.png"></li>
-          <li><img src="cards/Jloysnenph.png"></li>
-          <li><img src="cards/MDao.png"></li>
-          <li><img src="cards/Synchron.png"></li>
-          <li><img src="cards/Wumpa.png"></li>
-        </ul>
+    <div class="modal fade" id="deckbuilder" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <ul class="list-unstyled" id="draggableCards">
+            <li><img src="cards/Yhprum.png"></li>
+            <li><img src="cards/Klinestife.png"></li>
+            <li><img src="cards/Jloysnenph.png"></li>
+            <li><img src="cards/MDao.png"></li>
+            <li><img src="cards/Synchron.png"></li>
+            <li><img src="cards/Wumpa.png"></li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>
   <script src="js/game.js"></script>
   <script src="js/global.js"></script>
   <script src="js/cards.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>

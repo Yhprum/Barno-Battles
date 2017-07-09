@@ -1,20 +1,9 @@
-/* The container <div> - needed to position the dropdown content */
 .dropdown {
-    position: relative;
-    display: inline-block;
-    float: right;
+    margin-top: 10px;
 }
 
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    right: 0px;
-    border: 1px solid lightgrey;
-    padding: 3px 3px 3px 3px;
+.dropdown-menu {
+    padding: 5px 3px 5px 3px;
 }
 
 .show {display:block;}

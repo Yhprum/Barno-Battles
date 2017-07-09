@@ -52,6 +52,8 @@ $(document).ready(function() {
     function login() {
         socket = io();
         socket.emit('login', name);
+        document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
+        document.getElementById("headerDropdown").innerHTML = '<button data-toggle="modal" data-target="#deckbuilder">Build Deck</button>';
 
         socket.on('users', function(usernames) { // update user list
             $("#online").empty();
