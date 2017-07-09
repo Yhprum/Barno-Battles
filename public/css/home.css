@@ -39,3 +39,17 @@
     width: 100px;
     height: 160px;
 }
+
+.card img {
+    border:1px solid #000000;
+    border-radius: 16px;
+    width: 100px;
+    height: 160px;
+}
+
+body .card {
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 10px;
+}

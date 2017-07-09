@@ -73,7 +73,7 @@ $(document).ready(function() {
                             });
                         });
                     } else {
-                        $("#online").append("<li class='list-group-item'>" + username + "</li>")
+                        //$("#online").append("<li class='list-group-item'>" + username + "</li>")
                     }
                 }
             }
@@ -86,8 +86,9 @@ $(document).ready(function() {
                     var battleTitle = rooms[[room]].players[0] + " vs. " + rooms[[room]].players[1];
                     $("#battles").append("<li class='list-group-item'>" + battleTitle + "<button id='batl" + room + "' style='float: right'>Spectate</button></li>");
                     $("#batl" + room).on('click', function() {
-                        // spectate
-                        alert("Currently not supported");
+                        $("#body").load("spectate.html", function() {
+                            alert("Currently not supported");
+                        });
                     });
                 }
             }
