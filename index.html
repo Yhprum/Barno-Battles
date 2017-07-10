@@ -11,72 +11,88 @@
   <body>
     <div class="navbar navbar-default navbar-static-top">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Yhprum</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="rules">Rules</a></li>
-            <li><a href="gandalf">About</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <div class="dropdown" id="loginDropdown">
-                <button id="headerButton" type="button" data-toggle="dropdown">Log In</button>
-                <ul class="dropdown-menu">
-                  <li id="headerDropdown">Username:
-                    <input id="username" type="text">
-                    <button id="login">Submit</button>
-                  </li>
-                </ul>
-              </div>
+        <div class="tabs">
+          <ul class="nav nav-tabs">
+            <li><h1>Yhprum</h1></li>
+            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+            <li><a data-toggle="tab" href="#rules">Rules</a></li>
+            <li><a data-toggle="tab" href="#gandalf">About</a></li>
+            <li class="pull-right dropdown" id="loginDropdown">
+              <button id="headerButton" data-toggle="dropdown">Log In</button>
+              <ul class="dropdown-menu">
+                <li id="headerDropdown">Username:
+                  <input id="username" type="text">
+                  <button id="login">Submit</button>
+                </li>
+              </ul>
             </li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </div>
     <div id="body">
       <div class="container">
-        <div class="text-center">
-          <h1>Barno Battles!</h1>
-          <p class="lead">v1.0.0</p>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Online Users
+        <div class="tab-content">
+          <div id="home" class="tab-pane fade in active">
+            <div class="text-center">
+              <h1>Barno Battles!</h1>
+              <p class="lead">v1.0.0</p>
             </div>
-            <div class="panel-body" >
-              <ul id="online" class="list-group">
-              </ul>
+            <div class="col-md-4">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  Online Users
+                </div>
+                <div class="panel-body" >
+                  <ul id="online" class="list-group">
+                  </ul>
+                </div>
+              </div> 
             </div>
-          </div> 
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Challenges
+            <div class="col-md-4">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  Challenges
+                </div>
+                <div class="panel-body" >
+                  <ul id="challenges" class="list-group">
+                  </ul>
+                </div>
+              </div>
             </div>
-            <div class="panel-body" >
-              <ul id="challenges" class="list-group">
-              </ul>
+            <div class="col-md-4">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  Ongoing Battles
+                </div>
+                <div class="panel-body" >
+                  <ul id="battles" class="list-group">
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Ongoing Battles
+          <div id="rules" class="tab-pane fade">
+            <div class="text-center">
+              <h1>Rules</h1>
+              <p class="lead">v1.0.0</p>
             </div>
-            <div class="panel-body" >
-              <ul id="battles" class="list-group">
-              </ul>
+            <hr>
+            <h2></a>Stats</h2>
+            <p><b>Attack</b> - Affects how much damage the card can deal<br>
+            <b>Defense</b> - Affects how much damage the card can take<br>
+            <b>HP</b> - How much damage the card can take before being defeated</p>
+            <h2>Moves</h2>
+            <p><b>Fast Attack</b> - Normally deals damage based on the attacker’s attack minus the defender’s defense<br>
+            <b>Slow attack</b> - Normally deals damage equal to the attacker’s attack, ignoring the defender’s defense<br>
+            <b>Defend</b> - Double’s the user’s defense for the turn. If the opponent uses a fast attack that would deal 0 damage after calculation, 3 damage is reflected to the attacker<br>
+            <b>Anticipate</b> - Counters any slow attack and refects the damage back at the attacker, but gains 0 defense against fast attacks<br>
+            <b>Abilities</b> - Varies based on card<br>
+            <b>Switch</b> - Switch the current active card out for the selected card</p>
+          </div>
+          <div id="gandalf" class="tab-pane fade">
+            <div align="center">
+              <img src="http://i.imgur.com/0tykmxD.gif" alt="HTML5 Icon" style="width:522px;height:216px;">
             </div>
           </div>
         </div>
@@ -86,11 +102,11 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <ul class="list-unstyled" id="draggableCards">
-            <li class="card"><img src="cards/Yhprum.png"></li>
-            <li class="card"><img src="cards/Klinestife.png"></li>
+            <li class="card"><img src="cards/YhprumText.png"></li>
+            <li class="card"><img src="cards/KlinestifeText.png"></li>
             <li class="card"><img src="cards/Jloysnenph.png"></li>
-            <li class="card"><img src="cards/MDao.png"></li>
-            <li class="card"><img src="cards/Synchron.png"></li>
+            <li class="card"><img src="cards/MDaoText.png"></li>
+            <li class="card"><img src="cards/SynchronText.png"></li>
             <li class="card"><img src="cards/Wumpa.png"></li>
           </ul>
         </div>

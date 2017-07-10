@@ -113,7 +113,7 @@ $(document).ready(function() {
         });
 
         socket.on('start game', function() {
-            $("#body").load("game.html", function() {
+            $("#body").load("game.html", function() { // can we use bootstrap tabs for this
                 // Instantiate game screen vars
                 $activeCard = document.getElementById('activePlayer');
                 $activeOpponent = document.getElementById('activeOpponent');

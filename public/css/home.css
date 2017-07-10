@@ -1,12 +1,37 @@
 .dropdown {
-    margin-top: 10px;
+    margin-top: 4px;
 }
 
 .dropdown-menu {
     padding: 5px 3px 5px 3px;
 }
 
-.show {display:block;}
+.tabs h1 {
+    float: left;
+    padding: 0px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #777;
+    margin-top: 0.67em;
+}
+
+.tabs {
+    height: 50px; 
+    position: relative;
+    bottom: -1px;
+    left: -15px;
+    width: inherit;
+}
+
+.nav-tabs {
+    position: absolute;
+    bottom: 0;
+    width: inherit;
+}
+
+.nav-tabs li a {
+    color: #555;
+}
 
 .modal {
     display: none;
