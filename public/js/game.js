@@ -205,6 +205,8 @@ $(document).ready(function() {
             row.appendChild(text);
             $("#history")[0].appendChild(row);
 
+            document.getElementById("turnNumber").innerText = "Turn " + (turn + 1);
+
             row = document.createElement("tr");
             text = document.createElement("td");
             text.innerHTML = history;
