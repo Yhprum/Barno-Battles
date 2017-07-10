@@ -37,6 +37,10 @@ io.on('connection', function(socket) {
         io.to(usernames[[opponentName]]).emit('challenge', challenger);
     });
 
+    socket.on('cancel', function(opponentName, name) {
+        io.to(usernames[[opponentName]]).emit('cancelled challenge', name);
+    });
+
     socket.on('accept', function(opponentName, name) {
         io.to(usernames[[opponentName]]).emit('accepted challenge');
         rooms[[opponentName]] = {};
@@ -60,11 +64,15 @@ io.on('connection', function(socket) {
     });
 
     socket.on('use move', function(name, move, card, active, roomname) {
-        var cur = rooms[[roomname]]
+        var cur = rooms[[roomname]];
         if(cur) {
             cur['moves'].push({'username': name, 'move': move, 'card': card});
             cur['activeCards'].push(active);
-            cur.history += '<b>' + name + ':</b> ' + active + ' used ' + move + "<br>";
+            if (move.includes("card")) {
+                cur.history += "<b>" + name + ":</b> Switched to " + active + "<br>";
+            } else {
+                cur.history += "<b>" + name + ":</b> " + active + " used " + move + "<br>";
+            }
 
             if (rooms[[roomname]]['moves'].length == 2) {
                 let damages = calculator.calculate(rooms[[roomname]]['moves']);

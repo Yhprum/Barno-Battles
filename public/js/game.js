@@ -67,7 +67,7 @@ $(document).ready(function() {
                             $("#cancel" + opponent).on('click', function() {
                                 this.parentNode.remove();
                                 $("#chal" + opponent).show();
-                                socket.emit('cancel challenge', opponent, name);
+                                socket.emit('cancel', opponent, name);
                             });
                         });
                     } else {
@@ -101,6 +101,10 @@ $(document).ready(function() {
                 socket.emit('join room', roomname);
 
             });
+        });
+
+        socket.on('cancelled challenge', function(opponentName) {
+            document.getElementById("ac" + opponentName).parentElement.remove();
         });
 
         socket.on('accepted challenge', function() {
