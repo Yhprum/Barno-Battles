@@ -28,8 +28,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#open").on('click', function() {
-        document.getElementById("loginMenu").classList.toggle("show");
+    $("#loginDropdown").on('shown.bs.dropdown', function() {
         $usernameInput.focus();
     });
     $login.on('click', function() {
@@ -44,7 +43,6 @@ $(document).ready(function() {
     function verify() {
         name = $usernameInput.val().trim();
         if (name) {
-            $("#loginDropdown").remove();
             login();
         }
     }
