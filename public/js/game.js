@@ -127,7 +127,7 @@ $(document).ready(function() {
 
         socket.on('start game', function(gameNumber) {
             var gameTab = document.createElement("li");
-            gameTab.innerHTML = "<a data-toggle='tab' href='#" + gameNumber + "'>vs. " + opponent + "</a>"
+            gameTab.innerHTML = "<a data-toggle='tab' href='#" + gameNumber + "'>vs. " + opponent + "<span class='pull-right close'>&times;</span></a>"
             document.getElementById("tabList").appendChild(gameTab);
 
             var gameHTML = document.createElement("div");
@@ -193,6 +193,15 @@ $(document).ready(function() {
                         selection = target.id;
                         nextMove.innerText = "Switch to " + target.name;
                     }
+                });
+
+                $(".close").on("click", function() { // close the game tab TODO: end the game/disconnect from room only when this is pressed
+                    var tabContentId = $(this).parent().attr("href");
+                    $(this).parent().parent().remove();
+                    $('#tabList a[href="#home"]').tab('show');
+                    document.getElementById("home").className += " active in";
+                    $(tabContentId).remove();
+                    window.clearInterval(timer);
                 });
 
                 var hpValues = {};
