@@ -12,11 +12,12 @@
     <div class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="tabs">
-          <ul class="nav nav-tabs">
+          <ul class="nav nav-tabs" id="tabList">
             <li><h1>Yhprum</h1></li>
             <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
             <li><a data-toggle="tab" href="#rules">Rules</a></li>
             <li><a data-toggle="tab" href="#gandalf">About</a></li>
+            <li><a data-toggle="tab" href="#game">Game</a></li>
             <li class="pull-right dropdown" id="loginDropdown">
               <button id="headerButton" data-toggle="dropdown">Log In</button>
               <ul class="dropdown-menu">
@@ -30,73 +31,70 @@
         </div>
       </div>
     </div>
-    <div id="body">
-      <div class="container">
-        <div class="tab-content">
-          <div id="home" class="tab-pane fade in active">
-            <div class="text-center">
-              <h1>Barno Battles!</h1>
-              <p class="lead">v1.0.0</p>
+    <div class="tab-content">
+      <div id="home" class="tab-pane fade in active container">
+        <div class="text-center">
+          <h1>Barno Battles!</h1>
+          <p class="lead">v1.0.0</p>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Online Users
             </div>
-            <div class="col-md-4">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  Online Users
-                </div>
-                <div class="panel-body" >
-                  <ul id="online" class="list-group">
-                  </ul>
-                </div>
-              </div> 
+            <div class="panel-body" >
+              <ul id="online" class="list-group">
+              </ul>
             </div>
-            <div class="col-md-4">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  Challenges
-                </div>
-                <div class="panel-body" >
-                  <ul id="challenges" class="list-group">
-                  </ul>
-                </div>
-              </div>
+          </div> 
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Challenges
             </div>
-            <div class="col-md-4">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  Ongoing Battles
-                </div>
-                <div class="panel-body" >
-                  <ul id="battles" class="list-group">
-                  </ul>
-                </div>
-              </div>
+            <div class="panel-body" >
+              <ul id="challenges" class="list-group">
+              </ul>
             </div>
           </div>
-          <div id="rules" class="tab-pane fade">
-            <div class="text-center">
-              <h1>Rules</h1>
-              <p class="lead">v1.0.0</p>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Ongoing Battles
             </div>
-            <hr>
-            <h2></a>Stats</h2>
-            <p><b>Attack</b> - Affects how much damage the card can deal<br>
-            <b>Defense</b> - Affects how much damage the card can take<br>
-            <b>HP</b> - How much damage the card can take before being defeated</p>
-            <h2>Moves</h2>
-            <p><b>Fast Attack</b> - Normally deals damage based on the attacker’s attack minus the defender’s defense<br>
-            <b>Slow attack</b> - Normally deals damage equal to the attacker’s attack, ignoring the defender’s defense<br>
-            <b>Defend</b> - Double’s the user’s defense for the turn. If the opponent uses a fast attack that would deal 0 damage after calculation, 3 damage is reflected to the attacker<br>
-            <b>Anticipate</b> - Counters any slow attack and refects the damage back at the attacker, but gains 0 defense against fast attacks<br>
-            <b>Abilities</b> - Varies based on card<br>
-            <b>Switch</b> - Switch the current active card out for the selected card</p>
-          </div>
-          <div id="gandalf" class="tab-pane fade">
-            <div align="center">
-              <img src="http://i.imgur.com/0tykmxD.gif" alt="HTML5 Icon" style="width:522px;height:216px;">
+            <div class="panel-body" >
+              <ul id="battles" class="list-group">
+              </ul>
             </div>
           </div>
         </div>
       </div>
+      <div id="rules" class="tab-pane fade container">
+        <div class="text-center">
+          <h1>Rules</h1>
+          <p class="lead">v1.0.0</p>
+        </div>
+        <hr>
+        <h2></a>Stats</h2>
+        <p><b>Attack</b> - Affects how much damage the card can deal<br>
+        <b>Defense</b> - Affects how much damage the card can take<br>
+        <b>HP</b> - How much damage the card can take before being defeated</p>
+        <h2>Moves</h2>
+        <p><b>Fast Attack</b> - Normally deals damage based on the attacker’s attack minus the defender’s defense<br>
+        <b>Slow attack</b> - Normally deals damage equal to the attacker’s attack, ignoring the defender’s defense<br>
+        <b>Defend</b> - Double’s the user’s defense for the turn. If the opponent uses a fast attack that would deal 0 damage after calculation, 3 damage is reflected to the attacker<br>
+        <b>Anticipate</b> - Counters any slow attack and refects the damage back at the attacker, but gains 0 defense against fast attacks<br>
+        <b>Abilities</b> - Varies based on card<br>
+        <b>Switch</b> - Switch the current active card out for the selected card</p>
+      </div>
+      <div id="gandalf" class="tab-pane fade">
+        <div align="center">
+          <img src="http://i.imgur.com/0tykmxD.gif" alt="HTML5 Icon" style="width:522px;height:216px;">
+        </div>
+      </div>
+      <div id="game" class="tab-pane fade"></div>
     </div>
     <div class="modal fade" id="deckbuilder" role="dialog">
       <div class="modal-dialog modal-lg">

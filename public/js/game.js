@@ -40,10 +40,13 @@ $(document).ready(function() {
         }
     });
 
-    function verify() {
+    function verify() { // TODO: make sure names can only be letters/numbers (or create escaping method which I don't wanna do)
         name = $usernameInput.val().trim();
-        if (name) {
+        if (name.match(/[\w]+/)[0] === name) {
             login();
+        } else {
+            // display error
+            alert("Names currently can only consist of letters, numbers, and _");
         }
     }
 
@@ -102,11 +105,11 @@ $(document).ready(function() {
         socket.on('challenge', function(opponentName) {
             $("#challenges").append("<li class='list-group-item'>" + opponentName + "<button id=ac" + opponentName + " style='float: right'>Accept</button></li>");
             $("#ac" + opponentName).on('click', function() {
+                this.parentNode.remove();
                 roomname = this.id.substring(2, this.id.length);
                 opponent = opponentName;
                 socket.emit('accept', roomname, name, opponent);
                 socket.emit('join room', roomname);
-
             });
         });
 
@@ -114,13 +117,16 @@ $(document).ready(function() {
             document.getElementById("ac" + opponentName).parentElement.remove();
         });
 
-        socket.on('accepted challenge', function() {
+        socket.on('accepted challenge', function(opponentName) {
+            opponent = opponentName;
+            document.getElementById("cancel" + opponent).parentElement.remove()
             socket.emit('join room', name);
             roomname = name;
         });
 
         socket.on('start game', function() {
-            $("#body").load("game.html", function() { // can we use bootstrap tabs for this
+            $("#game").load("game.html", function() { // can we use bootstrap tabs for this
+                $('#tabList a[href="#game"]').tab('show');
                 // Instantiate game screen vars
                 $activeCard = document.getElementById('activePlayer');
                 $activeOpponent = document.getElementById('activeOpponent');
@@ -251,9 +257,8 @@ $(document).ready(function() {
                     if (canSwitch.indexOf(1) == -1) { // you lose!
                         socket.emit('game end', roomname, opponent); // TODO: broadcast to room?
                         alert("You lose!");
-                        $("#body").load("home.html", function() { // TODO: both sockets need to leave the room
-                            socket.emit('update');
-                        });
+                        $('#tabList a[href="#home"]').tab('show'); // TODO: both sockets need to leave the room
+                        socket.emit('update');
                     } else {
                         nextMove.innerText = activeCard + " has been defeated!";
                         timer = window.setInterval(switchCardTimer, SWITCH_TIMER_SPEED);
@@ -305,10 +310,8 @@ $(document).ready(function() {
         }
 
         socket.on('leave game', function(str) {
-            alert(str);
-            $("#body").load("home.html", function() {
-                socket.emit('update');
-            });
+            alert(str); // write messages in chat that show winner/reason instead of alert
+            // $('#tabList a[href="#home"]').tab('show');
         });
     }
 });

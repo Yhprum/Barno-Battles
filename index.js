@@ -42,7 +42,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('accept', function(opponentName, name) {
-        io.to(usernames[[opponentName]]).emit('accepted challenge');
+        io.to(usernames[[opponentName]]).emit('accepted challenge', name);
         rooms[[opponentName]] = {};
         rooms[[opponentName]]['hp'] = {};
         rooms[[opponentName]]['turn'] = 1;
