@@ -8,6 +8,7 @@ var calculator = require("./calculator");
 
 var usernames = {};
 var rooms = {};
+var gameNumber = 0;
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
@@ -50,12 +51,13 @@ io.on('connection', function(socket) {
         rooms[[opponentName]]['moves'] = [];
         rooms[[opponentName]]['history'] = '';
         rooms[[opponentName]]['players'] = [opponentName, name];
+        rooms[[opponentName]]["gameNumber"] = gameNumber++;
     });
 
     socket.on('join room', function(roomname) {
         socket.join(roomname);
         rooms[[roomname]]['hp'][[socket.username]] = {};
-        io.to(usernames[socket.username]).emit('start game');
+        io.to(usernames[socket.username]).emit('start game', rooms[[roomname]].gameNumber);
         io.emit('battles', rooms);
     });
 

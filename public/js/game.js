@@ -37,12 +37,13 @@ $(document).ready(function() {
     $usernameInput.on('keyup', function (e) {
         if (e.keyCode === 13) {
             verify();
+            $("#loginDropdown").dropdown("toggle");
         }
     });
 
     function verify() { // TODO: make sure names can only be letters/numbers (or create escaping method which I don't wanna do)
         name = $usernameInput.val().trim();
-        if (name.match(/[\w]+/)[0] === name) {
+        if (name.match(/[\w]+/)[0] === name) { // change to server-side?
             login();
         } else {
             // display error
@@ -124,9 +125,18 @@ $(document).ready(function() {
             roomname = name;
         });
 
-        socket.on('start game', function() {
-            $("#game").load("game.html", function() { // can we use bootstrap tabs for this
-                $('#tabList a[href="#game"]').tab('show');
+        socket.on('start game', function(gameNumber) {
+            var gameTab = document.createElement("li");
+            gameTab.innerHTML = "<a data-toggle='tab' href='#" + gameNumber + "'>vs. " + opponent + "</a>"
+            document.getElementById("tabList").appendChild(gameTab);
+
+            var gameHTML = document.createElement("div");
+            gameHTML.id = gameNumber;
+            gameHTML.classList = "tab-pane fade";
+            document.getElementById("tabContent").appendChild(gameHTML);
+
+            $("#" + gameNumber).load("game.html", function() { // can we use bootstrap tabs for this
+                $('#tabList a[href="#' + gameNumber + '"]').tab('show');
                 // Instantiate game screen vars
                 $activeCard = document.getElementById('activePlayer');
                 $activeOpponent = document.getElementById('activeOpponent');
@@ -312,6 +322,7 @@ $(document).ready(function() {
         socket.on('leave game', function(str) {
             alert(str); // write messages in chat that show winner/reason instead of alert
             // $('#tabList a[href="#home"]').tab('show');
+            // delete the tab
         });
     }
 });
