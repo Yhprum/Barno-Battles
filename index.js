@@ -125,6 +125,10 @@ io.on('connection', function(socket) {
         delete rooms[roomname];
     });
 
+    socket.on('leave room', function(roomname) {
+        socket.leave(roomname); // TODO: check if game is in progress
+    });
+
     socket.on('disconnect', function(){
         console.log(socket.username + ' has disconnected');
         delete usernames[socket.username];

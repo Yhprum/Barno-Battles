@@ -202,6 +202,7 @@ $(document).ready(function() {
                     document.getElementById("home").className += " active in";
                     $(tabContentId).remove();
                     window.clearInterval(timer);
+                    leaveGame();
                 });
 
                 var hpValues = {};
@@ -326,6 +327,10 @@ $(document).ready(function() {
                 nextMove.innerText = "Your next move is...";
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             }
+        }
+
+        function leaveGame() {
+            socket.emit('leave room', roomname);
         }
 
         socket.on('leave game', function(str) {
