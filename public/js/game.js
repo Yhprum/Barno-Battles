@@ -6,7 +6,7 @@ $(document).ready(function() {
     var $usernameInput = $("#username");
     var selection = DEFAULT_SELECTION;
 
-    // default deck for testing
+    // default deck
     var deck = ["Yhprum", "Klinestife", "Jloysnenph", "MDao", "Synchron", "Wumpa"];
     var canSwitch = [1, 1, 1, 1, 1, 1]; // value is 0 if it has 0 hp, indexes correspond to deck
     var activeCard, activeOpponent, timer;
@@ -52,6 +52,13 @@ $(document).ready(function() {
         socket.emit('login', name);
         document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
         document.getElementById("headerDropdown").innerHTML = '<button data-toggle="modal" data-target="#deckbuilder">Build Deck</button>';
+
+        $("#deckbuilder").on("hidden.bs.modal", function () {
+            let i = 0;
+            $("#deckbuilder img").each(function() {
+                deck[i++] = this.name;
+            });
+        });
 
         socket.on('users', function(usernames) { // update user list
             $("#online").empty();
@@ -149,8 +156,12 @@ $(document).ready(function() {
                 });
 
                 $("#selections .panel").on("click", function(e) {
-                    selection = e.target.id;
-                    nextMove.innerText = "Use " + e.target.innerText;
+                    if (e.target.id.includes("ability")) { // TODO: remove after implementing abilities
+                        nextMove.innerText = "Currently not supported";
+                    } else {
+                        selection = e.target.id;
+                        nextMove.innerText = "Use " + e.target.innerText;
+                    }
                 });
 
                 $("#selections .card").on("click", function(e) {

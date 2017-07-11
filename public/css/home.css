@@ -46,9 +46,14 @@
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    width: 60%;
+    padding: 5px 5px 5px 5px;
+}
+
+.modal .card img {
+    border:1px solid #000000;
+    border-radius: 16px;
+    width: 286px;
+    height: 457.6px;
 }
 
 #draggableCards {
@@ -57,12 +62,10 @@
 
 #draggableCards li {
     float: left;
-    margin-top: 3px;
-    margin-left: 3px;
-    margin-right: 3px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
     margin-bottom: 10px;
-    width: 100px;
-    height: 160px;
 }
 
 .card img {

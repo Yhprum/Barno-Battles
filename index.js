@@ -95,7 +95,7 @@ io.on('connection', function(socket) {
                 cur.history = '';
             }
         } else {
-            socket.leave(roomname);
+            socket.leave(roomname); // broadcast to room?
             io.to(usernames[socket.username]).emit('leave game', "your opponent disconnected");
         }
     });
@@ -105,7 +105,7 @@ io.on('connection', function(socket) {
             fn(rooms[[roomname]]['hp']);
             io.to(usernames[[opponentName]]).emit('opponent switched', newActive, rooms[[roomname]]['hp']);
         } else {
-            socket.leave(roomname);
+            socket.leave(roomname); // broadcast to room?
             io.to(usernames[socket.username]).emit('leave game', "your opponent disconnected");
         }
     });
