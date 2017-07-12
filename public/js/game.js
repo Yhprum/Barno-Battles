@@ -95,9 +95,7 @@ $(document).ready(function() {
                     var battleTitle = rooms[[room]].players[0] + " vs. " + rooms[[room]].players[1];
                     $("#battles").append("<li class='list-group-item'>" + battleTitle + "<button id='batl" + room + "' style='float: right'>Spectate</button></li>");
                     $("#batl" + room).on('click', function() {
-                        $("#body").load("spectate.html", function() {
-                            alert("Currently not supported");
-                        });
+                        alert("Currently not supported");
                     });
                 }
             }
@@ -202,7 +200,7 @@ $(document).ready(function() {
                     document.getElementById("home").className += " active in";
                     $(tabContentId).remove();
                     window.clearInterval(timer);
-                    leaveGame();
+                    socket.emit('leave room', roomname);
                 });
 
                 var hpValues = {};
@@ -229,7 +227,7 @@ $(document).ready(function() {
 
                 var card = cards[activeCard];
 
-                socket.emit('use move', name, selection, card, activeCard, roomname);
+                socket.emit('use move', name, opponent, selection, card, activeCard, roomname);
 
                 selection = DEFAULT_SELECTION;
                 i = width;
@@ -240,7 +238,7 @@ $(document).ready(function() {
         socket.on('update', function(hp, history, turn, cardsByPlayer) {
             let row = document.createElement("tr");
             let text = document.createElement("td");
-            text.innerHTML = '<b class="turn">Turn ' + turn + '</b>';
+            text.innerHTML = '<b class="turn">Turn ' + turn + '</b>'; // TODO: make turn class and only that row is darker
             row.appendChild(text);
             $("#history")[0].appendChild(row);
 
@@ -275,10 +273,7 @@ $(document).ready(function() {
                     // also disble clicking on defeated cards/remove css stuff
                     canSwitch[deck.indexOf(activeCard)] = 0;
                     if (canSwitch.indexOf(1) == -1) { // you lose!
-                        socket.emit('game end', roomname, opponent); // TODO: broadcast to room?
-                        alert("You lose!");
-                        $('#tabList a[href="#home"]').tab('show'); // TODO: both sockets need to leave the room
-                        socket.emit('update');
+                        socket.emit('game end', roomname, opponent);
                     } else {
                         nextMove.innerText = activeCard + " has been defeated!";
                         timer = window.setInterval(switchCardTimer, SWITCH_TIMER_SPEED);
@@ -319,7 +314,7 @@ $(document).ready(function() {
                     name: activeCard
                 });
 
-                socket.emit('switch card', roomname, opponent, activeCard, function(hp) {
+                socket.emit('switch card', roomname, name, opponent, activeCard, function(hp) {
                     hpPlayer.innerText = hp[[name]][[activeCard]].hp;
                 });
                 selection = DEFAULT_SELECTION;
@@ -329,14 +324,13 @@ $(document).ready(function() {
             }
         }
 
-        function leaveGame() {
-            socket.emit('leave room', roomname);
-        }
-
-        socket.on('leave game', function(str) {
-            alert(str); // write messages in chat that show winner/reason instead of alert
-            // $('#tabList a[href="#home"]').tab('show');
-            // delete the tab
+        socket.on('game end', function(str) {
+            window.clearInterval(timer);
+            let row = document.createElement("tr");
+            let text = document.createElement("td");
+            text.innerHTML = str;
+            row.appendChild(text);
+            document.getElementById("history").appendChild(row);
         });
     }
 });

@@ -65,7 +65,7 @@ io.on('connection', function(socket) {
         rooms[[roomname]]['hp'][[name]] = vals;
     });
 
-    socket.on('use move', function(name, move, card, active, roomname) {
+    socket.on('use move', function(name, opponentName, move, card, active, roomname) {
         var cur = rooms[[roomname]];
         if(cur) {
             cur['moves'].push({'username': name, 'move': move, 'card': card});
@@ -97,36 +97,36 @@ io.on('connection', function(socket) {
                 cur.history = '';
             }
         } else {
-            socket.leave(roomname); // broadcast to room?
-            io.to(usernames[socket.username]).emit('leave game', "your opponent disconnected");
+            let str = opponentName + " has disconnected.<br>" + name + " is the winner!";
+            io.to(roomname).emit('game end', str);
+            socket.leave(roomname);
         }
     });
 
-    socket.on('switch card', function(roomname, opponentName, newActive, fn) {
+    socket.on('switch card', function(roomname, name, opponentName, newActive, fn) {
         if (rooms[[roomname]]) {
             fn(rooms[[roomname]]['hp']);
             io.to(usernames[[opponentName]]).emit('opponent switched', newActive, rooms[[roomname]]['hp']);
         } else {
-            socket.leave(roomname); // broadcast to room?
-            io.to(usernames[socket.username]).emit('leave game', "your opponent disconnected");
+            let str = opponentName + " has disconnected.<br>" + name + " is the winner!";
+            io.to(roomname).emit('game end', str);
+            socket.leave(roomname);
         }
     });
 
-    socket.on('update', function() {
+    socket.on('game end', function(roomname, winner) {
+        let str = winner + " is the winner!";
+        io.to(roomname).emit('game end', str);
+        delete rooms[roomname];
         io.emit('users', usernames);
         io.emit('battles', rooms);
     });
 
-    socket.on('game end', function(roomname, winner) {
-        // io.clients(roomname).forEach(function(s) { FIX THIS
-        //     s.leave(roomname);
-        // });
-        io.to(usernames[winner]).emit('leave game', "You win!");
-        delete rooms[roomname];
-    });
-
     socket.on('leave room', function(roomname) {
-        socket.leave(roomname); // TODO: check if game is in progress
+        socket.leave(roomname);
+        if(rooms[roomname]) delete rooms[roomname];
+        io.emit('users', usernames);
+        io.emit('battles', rooms);
     });
 
     socket.on('disconnect', function(){
