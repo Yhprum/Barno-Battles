@@ -17,6 +17,7 @@
             <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
             <li><a data-toggle="tab" href="#rules">Rules</a></li>
             <li><a data-toggle="tab" href="#gandalf">About</a></li>
+            <li><a data-toggle="tab" href="#chat">Chat</a></li>
             <li class="pull-right dropdown" id="loginDropdown">
               <button id="headerButton" data-toggle="dropdown">Log In</button>
               <ul class="dropdown-menu">
@@ -41,7 +42,7 @@
             <div class="panel-heading">
               Online Users
             </div>
-            <div class="panel-body" >
+            <div class="panel-body">
               <ul id="online" class="list-group">
               </ul>
             </div>
@@ -52,7 +53,7 @@
             <div class="panel-heading">
               Challenges
             </div>
-            <div class="panel-body" >
+            <div class="panel-body">
               <ul id="challenges" class="list-group">
               </ul>
             </div>
@@ -63,7 +64,7 @@
             <div class="panel-heading">
               Ongoing Battles
             </div>
-            <div class="panel-body" >
+            <div class="panel-body">
               <ul id="battles" class="list-group">
               </ul>
             </div>
@@ -91,6 +92,39 @@
       <div id="gandalf" class="tab-pane fade">
         <div align="center">
           <img src="http://i.imgur.com/0tykmxD.gif" alt="HTML5 Icon" style="width:522px;height:216px;">
+        </div>
+      </div>
+      <div id="chat" class="tab-pane fade container">
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Rooms
+            </div>
+            <div class="panel-body">
+              <div id="chatrooms" class="list-group">
+                <a class="list-group-item">
+                  <span class="badge" id="lobbyBadge">12</span>
+                  <h4 class="list-group-item-heading">Lobby</h4>
+                  <p class="list-group-item-text">The main chat room</p>
+                </a>
+                <a class="list-group-item">
+                  <span class="badge" id="lobbyBadge">3</span>
+                  <h4 class="list-group-item-heading">Suggestions</h4>
+                  <p class="list-group-item-text">Leave any feature request/problems you see here</p>
+                </a>
+              </div>
+            </div>
+          </div> 
+        </div>
+        <div class="col-md-8">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Lobby
+            </div>
+            <div class="panel-body">
+              <!-- chat box -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
