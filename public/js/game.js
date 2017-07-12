@@ -237,6 +237,7 @@ $(document).ready(function() {
 
         socket.on('update', function(hp, history, turn, cardsByPlayer) {
             let row = document.createElement("tr");
+            row.classList = "turn-row";
             let text = document.createElement("td");
             text.innerHTML = '<b class="turn">Turn ' + turn + '</b>'; // TODO: make turn class and only that row is darker
             row.appendChild(text);

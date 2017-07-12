@@ -98,8 +98,23 @@ body .action {
     border-width: 2px;
 }
 
+.turn-row {
+    background-color: #f9f9f9;
+}
+
 .turn {
     font-size: 150%;
+}
+
+#history td {
+    border-top: 0;
+    padding: 0px 0px 0px 8px;
+}
+
+#history .turn-row td {
+    padding: 8px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 .hp {
