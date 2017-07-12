@@ -114,7 +114,12 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('game end', function(roomname, winner) {
+    socket.on('chat message', function (msg, name, roomname) {
+        msg = name + ": " + msg;
+        io.to(roomname).emit('chat message', msg);
+    });
+
+    socket.on('game end', function(roomname, winner) { // TODO: only delete room once everyone leaves?
         let str = winner + " is the winner!";
         io.to(roomname).emit('game end', str);
         delete rooms[roomname];

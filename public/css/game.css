@@ -34,6 +34,30 @@
     overflow-y: scroll;
 }
 
+.chatbox {
+    position: absolute;
+    bottom: 0;
+    left: 640px;
+    right: 0;
+    height: 40px;
+    border-bottom: 0;
+    border-right: 0;
+    padding-top: 7px;
+    padding-left: 7px;
+}
+
+.chat-name {
+    width: 86px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-input {
+    position: absolute;
+    right: 7px;
+    left: 100px;
+}
+
 #turnNumber {
     position: absolute;
     left: 10px;

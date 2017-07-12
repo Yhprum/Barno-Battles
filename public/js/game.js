@@ -151,6 +151,7 @@ $(document).ready(function() {
                 height = canvas.height;
                 i = width;
 
+                document.getElementById("chatName").innerText = name;
                 for (let i = 0; i < 6; i++) { // populate your cards
                     $("#card" + i).attr({
                         src: 'cards/' + deck[i] + '.png',
@@ -193,7 +194,17 @@ $(document).ready(function() {
                     }
                 });
 
-                $(".close").on("click", function() { // close the game tab TODO: end the game/disconnect from room only when this is pressed
+                $("#chatInput").on('keyup', function (e) {
+                    if (e.keyCode === 13) {
+                        let msg = $("#chatInput").val().trim();
+                        if (msg) {
+                            socket.emit('chat message', msg, name, roomname);
+                        }
+                        $("#chatInput").val("");
+                    }
+                });
+
+                $(".close").on("click", function() { // close the game tab
                     var tabContentId = $(this).parent().attr("href");
                     $(this).parent().parent().remove();
                     $('#tabList a[href="#home"]').tab('show');
@@ -239,7 +250,7 @@ $(document).ready(function() {
             let row = document.createElement("tr");
             row.classList = "turn-row";
             let text = document.createElement("td");
-            text.innerHTML = '<b class="turn">Turn ' + turn + '</b>'; // TODO: make turn class and only that row is darker
+            text.innerHTML = '<b class="turn">Turn ' + turn + '</b>';
             row.appendChild(text);
             $("#history")[0].appendChild(row);
 
@@ -324,6 +335,14 @@ $(document).ready(function() {
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
             }
         }
+
+        socket.on('chat message', function(msg) {
+            let row = document.createElement("tr");
+            let text = document.createElement("td");
+            text.innerHTML = msg;
+            row.appendChild(text);
+            document.getElementById("history").appendChild(row);
+        });
 
         socket.on('game end', function(str) {
             window.clearInterval(timer);
