@@ -6,6 +6,8 @@ $(document).ready(function() {
     var $usernameInput = $("#username");
     var selection = DEFAULT_SELECTION;
 
+    var $chatForm = $("#chatForm");
+
     // default deck
     var deck = ["Yhprum", "Klinestife", "Jloysnenph", "MDao", "Synchron", "Wumpa"];
     var canSwitch = [1, 1, 1, 1, 1, 1]; // value is 0 if it has 0 hp, indexes correspond to deck
@@ -28,6 +30,8 @@ $(document).ready(function() {
         }
     });
 
+    $chatForm.on('submit', function() {return false});
+
     $("#loginDropdown").on('shown.bs.dropdown', function() {
         $usernameInput.focus();
     });
@@ -37,13 +41,13 @@ $(document).ready(function() {
     $usernameInput.on('keyup', function (e) {
         if (e.keyCode === 13) {
             verify();
-            $("#loginDropdown").dropdown("toggle");
+            // $("#loginDropdown").dropdown("toggle"); // this makes the dropdown unusable
         }
     });
 
     function verify() { // TODO: make sure names can only be letters/numbers (or create escaping method which I don't wanna do)
-        name = $usernameInput.val().trim();
-        if (name.match(/[\w]+/)[0] === name) { // change to server-side?
+        name = $usernameInput.val().trim(); // or change all the places where I used the name as an id
+        if (name && name.match(/[\w]+/)[0] === name) { // change to server-side?
             login();
         } else {
             // display error
@@ -55,7 +59,7 @@ $(document).ready(function() {
         socket = io();
         socket.emit('login', name);
         document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
-        document.getElementById("headerDropdown").innerHTML = '<button data-toggle="modal" data-target="#deckbuilder">Build Deck</button>';
+        document.getElementById("headerDropdown").innerHTML = '<a href="#"" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>';
 
         $("#deckbuilder").on("hidden.bs.modal", function () {
             let i = 0;
@@ -342,6 +346,19 @@ $(document).ready(function() {
             text.innerHTML = msg;
             row.appendChild(text);
             document.getElementById("history").appendChild(row);
+        });
+
+        $chatForm.on('submit', function() {
+            let msg = document.getElementById("chatInput").value.trim();
+            if (msg) {
+                socket.emit('chatroom message', name, msg);
+                $chatForm[0].reset();
+                return false;
+            }
+        });
+
+        socket.on('chatroom message', function(msg) { // TODO: highlight user-sent messages/@usernames?
+            $("#messages").append($("<li>").html(msg));
         });
 
         socket.on('game end', function(str) {

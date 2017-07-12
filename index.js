@@ -34,6 +34,11 @@ io.on('connection', function(socket) {
         io.emit('battles', rooms);
     });
 
+    socket.on('chatroom message', function(name, msg) { // TODO: sanitize for HTML input, add a roomname param and only send to that room
+        msg = "<b>" + name + ":</b> " + msg;
+        io.emit('chatroom message', msg);
+    });
+
     socket.on('challenge', function(opponentName, challenger) {
         io.to(usernames[[opponentName]]).emit('challenge', challenger);
     });
@@ -114,7 +119,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('chat message', function (msg, name, roomname) {
+    socket.on('chat message', function (msg, name, roomname) { // TODO: Sanitize for HTML
         msg = name + ": " + msg;
         io.to(roomname).emit('chat message', msg);
     });
@@ -150,6 +155,6 @@ io.on('connection', function(socket) {
     });
 });
 
-http.listen(process.env.PORT || 3000, function(){
+http.listen(process.env.PORT || 3000, function() {
     console.log('listening on *:3000');
 });
