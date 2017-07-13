@@ -1,31 +1,27 @@
 .chat-panel .panel-body {
-	padding: 0px;
-	height: 500px;
-	overflow-y: scroll;
+    padding: 0px;
+    height: 500px;
+    overflow-y: scroll;
 }
 
 #messages {
-	list-style-type: none; margin: 0; padding: 0;
+    list-style-type: none; margin: 0; padding: 0;
 }
 
 #messages li {
-	padding: 5px 10px;
+    padding: 5px 10px;
 
 }
 
 #messages li:nth-child(odd) {
-	background: #eee;
+    background: #eee;
 }
 
 #chatForm #chatInput {
-	width: 90%;
+    width: 90%;
 }
 
 #chatForm .btn {
-	width: 9%;
-	float: right;
-}
-
-#chat .col-md-8 {
-	height: 238px; /* horrible hack to get the colums on the left closer */
+    width: 9%;
+    float: right;
 }
