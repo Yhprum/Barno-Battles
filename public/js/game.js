@@ -60,6 +60,8 @@ $(document).ready(function() {
         socket.emit('login', name);
         document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
         document.getElementById("headerDropdown").innerHTML = '<a href="#"" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>';
+        document.getElementById("chatInput").disabled = false;
+        document.getElementById("chatInput").placeholder = "Chat to Lobby";
 
         $("#deckbuilder").on("hidden.bs.modal", function () {
             let i = 0;
