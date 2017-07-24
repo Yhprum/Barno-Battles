@@ -11,7 +11,6 @@
 }
 
 .tabs h1 {
-    float: left;
     padding: 0px 15px;
     font-size: 18px;
     line-height: 20px;
@@ -20,11 +19,9 @@
 }
 
 .tabs {
-    height: 50px; 
     position: relative;
-    bottom: -1px;
+    bottom: -8px;
     left: -15px;
-    width: inherit;
 }
 
 .nav-tabs {
