@@ -5,12 +5,9 @@
       <link href="css/bootstrap.min.css" rel="stylesheet">
       <link href="css/home.css" rel="stylesheet">
       <link href="css/chat.css" rel="stylesheet">
-      <script src="/socket.io/socket.io.js"></script>
-      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-      <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   </head>
   <body>
-    <div class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-toggleable-md">
       <div class="container">
         <div class="tabs">
           <ul class="nav nav-tabs" id="tabList">
@@ -31,43 +28,45 @@
           </ul>
         </div>
       </div>
-    </div>
+    </nav>
     <div class="tab-content" id="tabContent">
       <div id="home" class="tab-pane fade in active container">
         <div class="text-center">
           <h1>Barno Battles!</h1>
           <p class="lead">v1.0.0</p>
         </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Online Users
-            </div>
-            <div class="panel-body">
-              <ul id="online" class="list-group">
-              </ul>
-            </div>
-          </div> 
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Challenges
-            </div>
-            <div class="panel-body">
-              <ul id="challenges" class="list-group">
-              </ul>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                Online Users
+              </div>
+              <div class="card-block">
+                <ul id="online" class="list-group">
+                </ul>
+              </div>
+            </div> 
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                Challenges
+              </div>
+              <div class="card-block">
+                <ul id="challenges" class="list-group">
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Ongoing Battles
-            </div>
-            <div class="panel-body">
-              <ul id="battles" class="list-group">
-              </ul>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                Ongoing Battles
+              </div>
+              <div class="card-block">
+                <ul id="battles" class="list-group">
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -92,16 +91,16 @@
       </div>
       <div id="gandalf" class="tab-pane fade">
         <div align="center">
-          <img src="http://i.imgur.com/0tykmxD.gif" alt="HTML5 Icon" style="width:522px;height:216px;">
+          <!-- <img src="http://i.imgur.com/0tykmxD.gif" alt="HTML5 Icon" style="width:522px;height:216px;"> -->
         </div>
       </div>
       <div id="chat" class="tab-pane fade container">
         <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
+          <div class="card">
+            <div class="card-header">
               Rooms
             </div>
-            <div class="panel-body">
+            <div class="card-block">
               <div id="chatrooms" class="list-group">
                 <a href="#" class="list-group-item">
                   <span class="badge" id="lobbyBadge">12</span>
@@ -116,25 +115,25 @@
               </div>
             </div>
           </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">
+          <div class="card">
+            <div class="card-header">
               Users in this room
             </div>
-            <div class="panel-body">
+            <div class="card-block">
               <!-- display users in room -->
             </div>
           </div>
         </div>
         <div class="col-md-8">
-          <div class="panel panel-default chat-panel">
-            <div class="panel-heading">
+          <div class="card chat-card">
+            <div class="card-header">
               Lobby
             </div>
-            <div class="panel-body">
+            <div class="card-block">
               <ul id="messages">
               </ul>
             </div>
-            <div class="panel-footer">
+            <div class="card-footer">
               <form class="form-inline" id="chatForm">
                 <input class="form-control" type="text" id="chatInput" autocomplete="off" placeholder="Sign in to chat" disabled>
                 <input class="btn" type="submit" value="Send">
@@ -158,9 +157,13 @@
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/cards.js"></script>
   </body>
-  <script src="js/game.js"></script>
-  <script src="js/global.js"></script>
-  <script src="js/cards.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
