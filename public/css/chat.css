@@ -17,11 +17,15 @@
     background: #eee;
 }
 
-#chatForm #chatInput {
-    width: 90%;
+#chatForm .input-group {
+	width: 100%;
 }
 
-#chatForm .btn {
-    width: 9%;
-    float: right;
+.badge {
+	position: absolute;
+	right: 20px;
+}
+
+.list-group-item p {
+	margin-bottom: auto;
 }

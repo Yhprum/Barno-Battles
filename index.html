@@ -95,49 +95,57 @@
         </div>
       </div>
       <div id="chat" class="tab-pane fade container">
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-header">
-              Rooms
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">
+                Rooms
+              </div>
+              <div class="card-block">
+                <div id="chatrooms" class="list-group">
+                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <span class="badge badge-default badge-pill float-right" id="lobbyBadge">12</span>
+                    <h4 class="list-group-item-heading">Lobby</h4>
+                    <p class="list-group-item-text">The main chat room</p>
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <span class="badge badge-default badge-pill" id="lobbyBadge">3</span>
+                    <h4 class="list-group-item-heading">Suggestions</h4>
+                    <p class="list-group-item-text">Leave any feature request/problems you see here</p>
+                  </a>
+                </div>
+              </div>
             </div>
-            <div class="card-block">
-              <div id="chatrooms" class="list-group">
-                <a href="#" class="list-group-item">
-                  <span class="badge" id="lobbyBadge">12</span>
-                  <h4 class="list-group-item-heading">Lobby</h4>
-                  <p class="list-group-item-text">The main chat room</p>
-                </a>
-                <a href="#" class="list-group-item">
-                  <span class="badge" id="lobbyBadge">3</span>
-                  <h4 class="list-group-item-heading">Suggestions</h4>
-                  <p class="list-group-item-text">Leave any feature request/problems you see here</p>
-                </a>
+            <div class="card">
+              <div class="card-header">
+                Users in this room
+              </div>
+              <div class="card-block">
+                <!-- display users in room -->
               </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header">
-              Users in this room
-            </div>
-            <div class="card-block">
-              <!-- display users in room -->
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="card chat-card">
-            <div class="card-header">
-              Lobby
-            </div>
-            <div class="card-block">
-              <ul id="messages">
-              </ul>
-            </div>
-            <div class="card-footer">
-              <form class="form-inline" id="chatForm">
-                <input class="form-control" type="text" id="chatInput" autocomplete="off" placeholder="Sign in to chat" disabled>
-                <input class="btn" type="submit" value="Send">
-              </form>
+          <div class="col-md-8">
+            <div class="card chat-card">
+              <div class="card-header">
+                Lobby
+              </div>
+              <div class="card-block">
+                <ul id="messages">
+                </ul>
+              </div>
+              <div class="card-footer">
+                <form class="form-inline" id="chatForm">
+                  <!-- <input class="form-control" type="text" id="chatInput" autocomplete="off" placeholder="Sign in to chat" disabled>
+                  <input class="btn" type="submit" value="Send"> -->
+                  <div class="input-group">
+                      <input class="form-control" type="text" id="chatInput" autocomplete="off" placeholder="Sign in to chat" disabled>
+                    <span class="input-group-btn">
+                      <button class="btn" type="button">Send</button>
+                    </span>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
