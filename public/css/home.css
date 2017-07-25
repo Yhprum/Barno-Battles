@@ -1,3 +1,7 @@
+body .card {
+    margin-bottom: 20px;
+}
+
 .list-group {
     margin: 0;
 }
