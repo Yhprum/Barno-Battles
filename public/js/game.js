@@ -60,8 +60,8 @@ $(document).ready(function() {
         socket.emit('login', name);
         document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
         document.getElementById("headerDropdown").innerHTML = '<a href="#"" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>';
-        document.getElementById("chatInput").disabled = false;
-        document.getElementById("chatInput").placeholder = "Chat to Lobby";
+        document.getElementById("chatroomInput").disabled = false;
+        document.getElementById("chatroomInput").placeholder = "Chat to Lobby";
 
         $("#deckbuilder").on("hidden.bs.modal", function () {
             let i = 0;
@@ -131,7 +131,8 @@ $(document).ready(function() {
 
         socket.on('start game', function(gameNumber) {
             var gameTab = document.createElement("li");
-            gameTab.innerHTML = "<a data-toggle='tab' href='#" + gameNumber + "'>vs. " + opponent + "<span class='pull-right close'>&times;</span></a>"
+            gameTab.classList = "nav-item";
+            gameTab.innerHTML = "<a class='nav-link' data-toggle='tab' href='#" + gameNumber + "'>vs. " + opponent + "<span class='pull-right close'>&times;</span></a>"
             document.getElementById("tabList").appendChild(gameTab);
 
             var gameHTML = document.createElement("div");
@@ -139,7 +140,7 @@ $(document).ready(function() {
             gameHTML.classList = "tab-pane fade";
             document.getElementById("tabContent").appendChild(gameHTML);
 
-            $("#" + gameNumber).load("game.html", function() { // can we use bootstrap tabs for this
+            $("#" + gameNumber).load("game.html", function() {
                 $('#tabList a[href="#' + gameNumber + '"]').tab('show');
                 // Instantiate game screen vars
                 $activeCard = document.getElementById('activePlayer');
@@ -176,7 +177,7 @@ $(document).ready(function() {
                     name: deck[0]
                 });
 
-                $("#selections .panel").on("click", function(e) {
+                $("#selections .action").on("click", function(e) {
                     if (e.target.id.includes("ability")) { // TODO: remove after implementing abilities
                         nextMove.innerText = "Currently not supported";
                     } else {
@@ -185,7 +186,7 @@ $(document).ready(function() {
                     }
                 });
 
-                $("#selections .card").on("click", function(e) {
+                $("#selections .barno").on("click", function(e) {
                     let target = e.target;
                     if (!target.id.includes("card")) {
                         target = target.parentElement.lastElementChild;
@@ -221,7 +222,7 @@ $(document).ready(function() {
                 });
 
                 var hpValues = {};
-                $(".cards .card img").each(function() {
+                $(".cards .barno img").each(function() {
                     hpValues[[this.name]] = {"hp": cards[this.name].hp};
                 });
                 socket.emit('set hp', name, hpValues, roomname);
@@ -351,7 +352,7 @@ $(document).ready(function() {
         });
 
         $chatForm.on('submit', function() {
-            let msg = document.getElementById("chatInput").value.trim();
+            let msg = document.getElementById("chatroomInput").value.trim();
             if (msg) {
                 socket.emit('chatroom message', name, msg);
                 $chatForm[0].reset();

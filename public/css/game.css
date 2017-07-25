@@ -50,12 +50,14 @@
     width: 86px;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: 600;
 }
 
 .chat-input {
     position: absolute;
     right: 7px;
     left: 100px;
+    bottom: 4px;
 }
 
 #turnNumber {
@@ -63,6 +65,10 @@
     left: 10px;
     font-size: 150%;
     padding: 0px 5px 0px 5px;
+}
+
+#nextMove {
+     margin: 10px;
 }
 
 #timer {
@@ -79,7 +85,7 @@
     cursor: pointer;
 }
 
-.card img {
+.barno img {
     border:1px solid #000000;
     border-radius: 16px;
     width: 100px;
@@ -90,7 +96,7 @@
     box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
 }
 
-body .card {
+body .barno {
     margin-top: 3px;
     margin-left: 3px;
     margin-right: 3px;
@@ -113,12 +119,12 @@ body .action {
     background: #ccdfff;
 }
 
-.actions .panel {
+.actions .card {
     text-align: center;
     cursor: pointer;
 }
 
-.actions .panel:hover {
+.actions .card:hover {
     border-width: 2px;
 }
 

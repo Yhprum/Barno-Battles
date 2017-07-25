@@ -7,28 +7,25 @@
       <link href="css/chat.css" rel="stylesheet">
   </head>
   <body>
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-      <div class="container tabs">
-        <ul class="navbar-nav nav nav-tabs" id="tabList">
-          <li><h1>Yhprum</h1></li>
-          <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Home</a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#rules">Rules</a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#gandalf">About</a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#chat">Chat</a></li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-          <li class="dropdown" id="loginDropdown">
-            <button id="headerButton" data-toggle="dropdown">Log In</button>
-            <ul class="dropdown-menu">
-              <li id="headerDropdown">Username:
-                <input id="username" type="text">
-                <button id="login">Submit</button>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <div class="tabs">
+      <ul class="container nav nav-tabs" id="tabList">
+        <li><h1>Yhprum</h1></li>
+        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#rules">Rules</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#gandalf">About</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#chat">Chat</a></li>
+        <a class="dropdown" id="loginDropdown">
+      <button id="headerButton" data-toggle="dropdown">Log In</button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li id="headerDropdown">Username:
+          <input id="username" type="text">
+          <button id="login">Submit</button>
+        </li>
+      </ul>
+    </a>
+      </ul>
+    </div>
+    
     <div class="tab-content" id="tabContent">
       <div id="home" class="tab-pane fade in show active container">
         <div class="text-center">
@@ -139,9 +136,9 @@
                   <!-- <input class="form-control" type="text" id="chatInput" autocomplete="off" placeholder="Sign in to chat" disabled>
                   <input class="btn" type="submit" value="Send"> -->
                   <div class="input-group">
-                      <input class="form-control" type="text" id="chatInput" autocomplete="off" placeholder="Sign in to chat" disabled>
-                    <span class="input-group-btn">
-                      <button class="btn" type="button">Send</button>
+                      <input class="form-control" type="text" id="chatroomInput" autocomplete="off" placeholder="Sign in to chat" disabled>
+                      <span class="input-group-btn">
+                      <button class="btn" type="submit">Send</button>
                     </span>
                   </div>
                 </form>
@@ -155,12 +152,12 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <ul class="list-unstyled" id="draggableCards">
-            <li class="card"><img src="cards/YhprumText.png" name="Yhprum"></li>
-            <li class="card"><img src="cards/KlinestifeText.png" name="Klinestife"></li>
-            <li class="card"><img src="cards/JloysnenphText.png" name="Jloysnenph"></li>
-            <li class="card"><img src="cards/MDaoText.png" name="MDao"></li>
-            <li class="card"><img src="cards/SynchronText.png" name="Synchron"></li>
-            <li class="card"><img src="cards/WumpaText.png" name="Wumpa"></li>
+            <li class="barno"><img src="cards/YhprumText.png" name="Yhprum"></li>
+            <li class="barno"><img src="cards/KlinestifeText.png" name="Klinestife"></li>
+            <li class="barno"><img src="cards/JloysnenphText.png" name="Jloysnenph"></li>
+            <li class="barno"><img src="cards/MDaoText.png" name="MDao"></li>
+            <li class="barno"><img src="cards/SynchronText.png" name="Synchron"></li>
+            <li class="barno"><img src="cards/WumpaText.png" name="Wumpa"></li>
           </ul>
         </div>
       </div>
