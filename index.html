@@ -100,13 +100,13 @@
               </div>
               <div class="card-block">
                 <div id="chatrooms" class="list-group">
-                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                  <a href="#lobby" name="Lobby" class="list-group-item list-group-item-action flex-column align-items-start active" data-toggle="tab">
                     <span class="badge badge-default badge-pill float-right" id="lobbyBadge">12</span>
                     <h4 class="list-group-item-heading">Lobby</h4>
                     <p class="list-group-item-text">The main chat room</p>
                   </a>
-                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <span class="badge badge-default badge-pill" id="lobbyBadge">3</span>
+                  <a href="#suggestions" name="Suggestions" class="list-group-item list-group-item-action flex-column align-items-start" data-toggle="tab" >
+                    <span class="badge badge-default badge-pill" id="suggestionsBadge">3</span>
                     <h4 class="list-group-item-heading">Suggestions</h4>
                     <p class="list-group-item-text">Leave any feature request/problems you see here</p>
                   </a>
@@ -128,8 +128,16 @@
                 Lobby
               </div>
               <div class="card-block">
-                <ul id="messages">
-                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane fade in active show" id="lobby">
+                    <ul class="messages" id="messagesLobby">
+                    </ul>
+                  </div>
+                  <div class="tab-pane fade" id="suggestions">
+                    <ul class="messages" id="messagesSuggestions">
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div class="card-footer">
                 <form class="form-inline" id="chatForm">

@@ -2,6 +2,7 @@ $(document).ready(function() {
     var name, opponent;
     var roomname;
     var socket;
+    var chatroom = "Lobby";
     var $login = $("#login");
     var $usernameInput = $("#username");
     var selection = DEFAULT_SELECTION;
@@ -28,6 +29,13 @@ $(document).ready(function() {
                     newIndex = $listItem.index();
             });
         }
+    });
+
+    $("#chatrooms>a").click(function (e) {
+      e.preventDefault();
+      chatroom = this.name;
+      $(this).siblings('a.active').removeClass("active");
+      $(this).tab('show');
     });
 
     $chatForm.on('submit', function() {return false});
@@ -361,7 +369,11 @@ $(document).ready(function() {
         });
 
         socket.on('chatroom message', function(msg) { // TODO: highlight user-sent messages/@usernames?
-            $("#messages").append($("<li>").html(msg));
+            if (msg.startsWith('/')) { // include ! command to broadcast?
+                handleChatCommand(msg);
+            } else {
+                $("#messages" + chatroom).append($("<li>").html(msg));
+            }
         });
 
         socket.on('game end', function(str) {
@@ -372,5 +384,14 @@ $(document).ready(function() {
             row.appendChild(text);
             document.getElementById("history").appendChild(row);
         });
+
+        function handleChatCommand(msg) {
+            //handle stuff
+            if (msg.startsWith("/help")) {
+                //handle help command
+            } else if (msg.startsWith("/ban")) {
+                // check for mod privileges
+            } // more checks
+        }
     }
 });
