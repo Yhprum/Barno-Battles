@@ -21,6 +21,9 @@ $(document).ready(function() {
 
     var width, height, i;
 
+    var hash = window.location.hash;
+    hash && $('#tabList a[href="' + hash + '"]').tab('show');
+
     var drag = $("#draggableCards");
     drag.sortable({
         update: function() {
@@ -32,10 +35,12 @@ $(document).ready(function() {
     });
 
     $("#chatrooms>a").click(function (e) {
-      e.preventDefault();
-      chatroom = this.name;
-      $(this).siblings('a.active').removeClass("active");
-      $(this).tab('show');
+        e.preventDefault();
+        chatroom = this.name;
+        $(this).siblings('a.active').removeClass("active");
+        $(this).tab('show');
+        document.getElementById("chatroomName").innerText = chatroom;
+        if (name) document.getElementById("chatroomInput").placeholder = "Chat to " + chatroom;
     });
 
     $chatForm.on('submit', function() {return false});
@@ -69,7 +74,7 @@ $(document).ready(function() {
         document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
         document.getElementById("headerDropdown").innerHTML = '<a href="#"" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>';
         document.getElementById("chatroomInput").disabled = false;
-        document.getElementById("chatroomInput").placeholder = "Chat to Lobby";
+        document.getElementById("chatroomInput").placeholder = "Chat to " + chatroom;
 
         $("#deckbuilder").on("hidden.bs.modal", function () {
             let i = 0;
@@ -369,11 +374,7 @@ $(document).ready(function() {
         });
 
         socket.on('chatroom message', function(msg) { // TODO: highlight user-sent messages/@usernames?
-            if (msg.startsWith('/')) { // include ! command to broadcast?
-                handleChatCommand(msg);
-            } else {
-                $("#messages" + chatroom).append($("<li>").html(msg));
-            }
+            $("#messages" + chatroom).append($("<li>").html(msg));
         });
 
         socket.on('game end', function(str) {
@@ -384,14 +385,5 @@ $(document).ready(function() {
             row.appendChild(text);
             document.getElementById("history").appendChild(row);
         });
-
-        function handleChatCommand(msg) {
-            //handle stuff
-            if (msg.startsWith("/help")) {
-                //handle help command
-            } else if (msg.startsWith("/ban")) {
-                // check for mod privileges
-            } // more checks
-        }
     }
 });

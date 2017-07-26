@@ -35,9 +35,28 @@ io.on('connection', function(socket) {
     });
 
     socket.on('chatroom message', function(name, msg) { // TODO: sanitize for HTML input, add a roomname param and only send to that room
-        msg = "<b>" + name + ":</b> " + msg;
-        io.emit('chatroom message', msg);
+        if (msg.startsWith('/')) { // include ! command to broadcast?
+            handleChatCommand(name, msg);
+        } else {
+            msg = "<b>" + name + ":</b> " + msg;
+            io.emit('chatroom message', msg);
+        }
     });
+
+    function handleChatCommand(name, msg) {
+        let r;
+        if (msg.startsWith("/help")) {
+            r = "help: ";
+        } else if (msg.startsWith("/ban")) {
+            // check for mod privileges
+            r = "ban";
+        } else if (msg.startsWith("/test")) {
+            //more checks
+        } else {
+            r = "Unknown command. Type /help for a list of commands"
+        }
+        io.to(usernames[[name]]).emit('chatroom message', r);
+    }
 
     socket.on('challenge', function(opponentName, challenger) {
         io.to(usernames[[opponentName]]).emit('challenge', challenger);
