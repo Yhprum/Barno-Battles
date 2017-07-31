@@ -6,6 +6,12 @@ body .card {
     margin: 0;
 }
 
+.pos-right {
+    position: absolute;
+    right: 10px;
+    top: 9px;
+}
+
 .dropdown {
     margin-top: 1px;
     right: 10px;

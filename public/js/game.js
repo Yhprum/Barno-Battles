@@ -88,12 +88,12 @@ $(document).ready(function() {
             for (var username in usernames) {
                 if (usernames.hasOwnProperty(username)) {
                     if (username != name) {
-                        $("#online").append("<li class='list-group-item'>" + username + "<button id='chal" + username + "' style='float: right'>Request</button></li>");
+                        $("#online").append("<li class='list-group-item'>" + username + "<button id='chal" + username + "' class='pos-right'>Request</button></li>");
                         $("#chal" + username).on('click', function() {
                             opponent = this.id.substring(4, this.id.length);
                             socket.emit('challenge', opponent, name);
                             $("#chal" + opponent).hide();
-                            $("#challenges").append("<li class='list-group-item'>To: " + opponent + "<button id=cancel" + opponent + " style='float: right'>Cancel</button></li>");
+                            $("#challenges").append("<li class='list-group-item'>To: " + opponent + "<button id=cancel" + opponent + " class='pos-right'>Cancel</button></li>");
                             $("#cancel" + opponent).on('click', function() {
                                 this.parentNode.remove();
                                 $("#chal" + opponent).show();
@@ -112,7 +112,7 @@ $(document).ready(function() {
             for (var room in rooms) {
                 if (rooms.hasOwnProperty(room)) {
                     var battleTitle = rooms[[room]].players[0] + " vs. " + rooms[[room]].players[1];
-                    $("#battles").append("<li class='list-group-item'>" + battleTitle + "<button id='batl" + room + "' style='float: right'>Spectate</button></li>");
+                    $("#battles").append("<li class='list-group-item'>" + battleTitle + "<button id='batl" + room + "' class='pos-right'>Spectate</button></li>");
                     $("#batl" + room).on('click', function() {
                         alert("Currently not supported");
                     });
@@ -121,7 +121,7 @@ $(document).ready(function() {
         });
 
         socket.on('challenge', function(opponentName) {
-            $("#challenges").append("<li class='list-group-item'>" + opponentName + "<button id=ac" + opponentName + " style='float: right'>Accept</button></li>");
+            $("#challenges").append("<li class='list-group-item'>" + opponentName + "<button id=ac" + opponentName + " class='pos-right'>Accept</button></li>");
             $("#ac" + opponentName).on('click', function() {
                 this.parentNode.remove();
                 roomname = this.id.substring(2, this.id.length);
@@ -145,7 +145,7 @@ $(document).ready(function() {
         socket.on('start game', function(gameNumber) {
             var gameTab = document.createElement("li");
             gameTab.classList = "nav-item";
-            gameTab.innerHTML = "<a class='nav-link' data-toggle='tab' href='#game" + gameNumber + "'>vs. " + opponent + "<span class='pull-right close'>&times;</span></a>"
+            gameTab.innerHTML = "<a class='nav-link' data-toggle='tab' href='#game" + gameNumber + "'>vs. " + opponent + "<span class='close'>&times;</span></a>"
             document.getElementById("tabList").appendChild(gameTab);
 
             var gameHTML = document.createElement("div");
