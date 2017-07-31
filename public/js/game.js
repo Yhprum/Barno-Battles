@@ -145,16 +145,16 @@ $(document).ready(function() {
         socket.on('start game', function(gameNumber) {
             var gameTab = document.createElement("li");
             gameTab.classList = "nav-item";
-            gameTab.innerHTML = "<a class='nav-link' data-toggle='tab' href='#" + gameNumber + "'>vs. " + opponent + "<span class='pull-right close'>&times;</span></a>"
+            gameTab.innerHTML = "<a class='nav-link' data-toggle='tab' href='#game" + gameNumber + "'>vs. " + opponent + "<span class='pull-right close'>&times;</span></a>"
             document.getElementById("tabList").appendChild(gameTab);
 
             var gameHTML = document.createElement("div");
-            gameHTML.id = gameNumber;
+            gameHTML.id = "game" + gameNumber;
             gameHTML.classList = "tab-pane fade";
             document.getElementById("tabContent").appendChild(gameHTML);
 
-            $("#" + gameNumber).load("game.html", function() {
-                $('#tabList a[href="#' + gameNumber + '"]').tab('show');
+            $("#game" + gameNumber).load("game.html", function() {
+                $('#tabList a[href="#game' + gameNumber + '"]').tab('show');
                 // Instantiate game screen vars
                 $activeCard = document.getElementById('activePlayer');
                 $activeOpponent = document.getElementById('activeOpponent');
@@ -227,9 +227,8 @@ $(document).ready(function() {
                 $(".close").on("click", function() { // close the game tab
                     var tabContentId = $(this).parent().attr("href");
                     $(this).parent().parent().remove();
-                    $('#tabList a[href="#home"]').tab('show');
-                    document.getElementById("home").className += " active in";
                     $(tabContentId).remove();
+                    $('#tabList a[href="#home"]').tab('show');
                     window.clearInterval(timer);
                     socket.emit('leave room', roomname);
                 });

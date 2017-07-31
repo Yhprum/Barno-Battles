@@ -19,6 +19,10 @@
     -webkit-transform-origin: top left;
 }
 
+.history .table thead th {
+    border-top: 0;
+}
+
 .history {
     position: absolute;
     top: 50px;
