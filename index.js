@@ -35,9 +35,75 @@ io.on('connection', function(socket) {
     });
 
     socket.on('chatroom message', function(name, msg) { // TODO: sanitize for HTML input, add a roomname param and only send to that room
-        msg = "<b>" + name + ":</b> " + msg;
-        io.emit('chatroom message', msg);
+        msg = msg.trim();
+        if (msg.startsWith('/')) { // include ! command to broadcast?
+            handleChatCommand(name, msg);
+        } else {
+            msg = "<b>" + name + ":</b> " + msg;
+            io.emit('chatroom message', msg);
+        }
     });
+
+    function handleChatCommand(name, msg) {
+        if (msg.startsWith("/help")) {
+            handleHelp(name, msg);
+        } else if (msg.startsWith("/ban")) {
+            // TODO: check for mod privileges
+            handleBan(name, msg);
+        } else if (msg.startsWith("/barno")) {
+            handleBarno(name);
+        } else if (msg.startsWith("/test")) {
+            //more checks
+        } else {
+            let r = "Unknown command. Type /help for a list of commands"
+            io.to(usernames[[name]]).emit('chatroom message', r);
+        }
+    }
+
+    function handleHelp(name, msg) {
+        let r, args = msg.split(" ");
+        if (args.length == 1) {
+            r = "<i>available commands: /help /barno</i><br> type /help [command name] for help on a specific command";
+        } else if (args.length == 2) {
+            if (args[1] == "help") {
+                r = "&#3232;_&#3232;"
+            } else if (args[1] == "ban") {
+                r = "Syntax: /ban [username] [time in seconds]<br> If no time is stated, the user will be banned for 5 minutes";
+            } else if (args[1] == "barno") {
+                r = "barno";
+            }
+        } else {
+            r = "Invalid syntax. Correct syntax is /help [command name]"
+        }
+        io.to(usernames[[name]]).emit('chatroom message', r);
+    }
+
+    function handleBan(name, msg) {
+        let r, time, args = msg.split(" ");
+        if (args.length == 2 || args.length == 3) {
+            time = ~~args[2] || 3000;
+            r = args[1] + " has been banned for " + time + " seconds";
+            ban(name);
+            setTimeout(function() { unban(name) }, time);
+        } else {
+            r = "Invalid syntax. Correct syntax is /ban [username] [time in seconds] or /ban [username]"
+        }
+        io.to(usernames[[name]]).emit('chatroom message', r);
+    }
+
+    function ban(name) {
+        // TODO: ban them (check name validity, check banee usertype, check if they're already banned, delete chat messages)
+    }
+
+    function unban(name) {
+        // TODO: make it so they can chat again
+    }
+
+    function handleBarno(name) {
+        let r = "Barno<br>";
+        for (let i = 0; i < 19; i++) r += "Barno<br>";
+        io.to(usernames[[name]]).emit('chatroom message', r);
+    }
 
     socket.on('challenge', function(opponentName, challenger) {
         io.to(usernames[[opponentName]]).emit('challenge', challenger);

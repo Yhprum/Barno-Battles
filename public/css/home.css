@@ -1,9 +1,21 @@
+body .card {
+    margin-bottom: 20px;
+}
+
 .list-group {
     margin: 0;
 }
 
+.pos-right {
+    position: absolute;
+    right: 10px;
+    top: 9px;
+}
+
 .dropdown {
-    margin-top: 4px;
+    margin-top: 1px;
+    right: 10px;
+    position: absolute;
 }
 
 .dropdown-menu {
@@ -11,26 +23,22 @@
 }
 
 .tabs h1 {
-    float: left;
     padding: 0px 15px;
-    font-size: 18px;
+    font-size: 25px;
     line-height: 20px;
     color: #777;
-    margin-top: 0.67em;
+    margin-top: 0.3em;
 }
 
 .tabs {
-    height: 50px; 
-    position: relative;
-    bottom: -1px;
-    left: -15px;
-    width: inherit;
+    background-color: #f7f7f9;
+    border-bottom: 1px solid #ddd;
+    padding-top: 8px;
+    margin-bottom: 20px;
 }
 
 .nav-tabs {
-    position: absolute;
-    bottom: 0;
-    width: inherit;
+    border-bottom-width: 0;
 }
 
 .nav-tabs li a {
@@ -72,14 +80,14 @@
     margin-bottom: 10px;
 }
 
-.card img {
+.barno img {
     border:1px solid #000000;
     border-radius: 16px;
     width: 100px;
     height: 160px;
 }
 
-body .card {
+body .barno {
     margin-top: 3px;
     margin-left: 3px;
     margin-right: 3px;
