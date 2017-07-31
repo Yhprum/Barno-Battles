@@ -15,14 +15,14 @@
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#gandalf">About</a></li>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#chat">Chat</a></li>
         <a class="dropdown" id="loginDropdown">
-      <button id="headerButton" data-toggle="dropdown">Log In</button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li id="headerDropdown">Username:
-          <input id="username" type="text">
-          <button id="login">Submit</button>
-        </li>
-      </ul>
-    </a>
+          <button role="button" id="headerButton" data-toggle="dropdown">Log In</button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li id="headerDropdown">Username:
+              <input id="username" type="text">
+              <button role="button" id="login">Submit</button>
+            </li>
+          </ul>
+        </a>
       </ul>
     </div>
     
@@ -144,7 +144,7 @@
                   <div class="input-group">
                       <input class="form-control" type="text" id="chatroomInput" autocomplete="off" placeholder="Sign in to chat" disabled>
                       <span class="input-group-btn">
-                        <button class="btn" type="submit">Send</button>
+                        <button role="button" class="btn" type="submit">Send</button>
                       </span>
                   </div>
                 </form>

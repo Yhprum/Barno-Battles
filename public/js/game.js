@@ -72,7 +72,7 @@ $(document).ready(function() {
         socket = io();
         socket.emit('login', name);
         document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
-        document.getElementById("headerDropdown").innerHTML = '<a href="#"" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>';
+        document.getElementById("headerDropdown").innerHTML = '<a class="dropdown-item" href="#"" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>';
         document.getElementById("chatroomInput").disabled = false;
         document.getElementById("chatroomInput").placeholder = "Chat to " + chatroom;
 
@@ -374,6 +374,9 @@ $(document).ready(function() {
         });
 
         socket.on('chatroom message', function(msg) { // TODO: highlight user-sent messages/@usernames?
+            var dt = new Date().toLocaleTimeString();
+            dt = dt.substring(0, dt.length - 6);
+            msg = "<small>" + dt + " </small>" + msg; // TODO: user preferences for timestamps
             $("#messages" + chatroom).append($("<li>").html(msg));
         });
 
