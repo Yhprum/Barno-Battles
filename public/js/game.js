@@ -366,17 +366,17 @@ $(document).ready(function() {
         $chatForm.on('submit', function() {
             let msg = document.getElementById("chatroomInput").value.trim();
             if (msg) {
-                socket.emit('chatroom message', name, msg);
+                socket.emit('chatroom message', name, msg, chatroom);
                 $chatForm[0].reset();
                 return false;
             }
         });
 
-        socket.on('chatroom message', function(msg) { // TODO: highlight user-sent messages/@usernames?
+        socket.on('chatroom message', function(msg, room) { // TODO: highlight user-sent messages/@usernames?
             var dt = new Date().toLocaleTimeString();
             dt = dt.substring(0, dt.length - 6);
             msg = "<small>" + dt + " </small>" + msg; // TODO: user preferences for timestamps
-            $("#messages" + chatroom).append($("<li>").html(msg));
+            $("#messages" + room).append($("<li>").html(msg));
         });
 
         socket.on('game end', function(str) {

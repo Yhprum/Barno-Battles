@@ -34,13 +34,13 @@ io.on('connection', function(socket) {
         io.emit('battles', rooms);
     });
 
-    socket.on('chatroom message', function(name, msg) { // TODO: sanitize for HTML input, add a roomname param and only send to that room
+    socket.on('chatroom message', function(name, msg, room) { // TODO: sanitize for HTML input, add a roomname param and only send to that room
         msg = msg.trim();
         if (msg.startsWith('/')) { // include ! command to broadcast?
             handleChatCommand(name, msg);
         } else {
             msg = "<b>" + name + ":</b> " + msg;
-            io.emit('chatroom message', msg);
+            io.emit('chatroom message', msg, room);
         }
     });
 
