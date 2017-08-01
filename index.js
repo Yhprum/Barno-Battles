@@ -37,33 +37,33 @@ io.on('connection', function(socket) {
     socket.on('chatroom message', function(name, msg, room) { // TODO: sanitize for HTML input, add a roomname param and only send to that room
         msg = msg.trim();
         if (msg.startsWith('/')) { // include ! command to broadcast?
-            handleChatCommand(name, msg);
+            handleChatCommand(name, msg, room);
         } else {
             msg = "<b>" + name + ":</b> " + msg;
             io.emit('chatroom message', msg, room);
         }
     });
 
-    function handleChatCommand(name, msg) {
+    function handleChatCommand(name, msg, room) {
         if (msg.startsWith("/help")) {
-            handleHelp(name, msg);
+            handleHelp(name, msg, room);
         } else if (msg.startsWith("/ban")) {
             // TODO: check for mod privileges
-            handleBan(name, msg);
+            handleBan(name, msg, room);
         } else if (msg.startsWith("/barno")) {
-            handleBarno(name);
+            handleBarno(name, room);
         } else if (msg.startsWith("/test")) {
             //more checks
         } else {
-            let r = "Unknown command. Type /help for a list of commands"
-            io.to(usernames[[name]]).emit('chatroom message', r);
+            let r = "<i>Unknown command. Type /help for a list of commands</i>"
+            io.to(usernames[[name]]).emit('chatroom message', r, room);
         }
     }
 
-    function handleHelp(name, msg) {
+    function handleHelp(name, msg, room) {
         let r, args = msg.split(" ");
         if (args.length == 1) {
-            r = "<i>available commands: /help /barno</i><br> type /help [command name] for help on a specific command";
+            r = "<i>available commands: /help /barno</i><br><span>type /help [command name] for help on a specific command</span>";
         } else if (args.length == 2) {
             if (args[1] == "help") {
                 r = "&#3232;_&#3232;"
@@ -73,12 +73,12 @@ io.on('connection', function(socket) {
                 r = "barno";
             }
         } else {
-            r = "Invalid syntax. Correct syntax is /help [command name]"
+            r = "<i>Invalid syntax. Correct syntax is /help [command name]</i>"
         }
-        io.to(usernames[[name]]).emit('chatroom message', r);
+        io.to(usernames[[name]]).emit('chatroom message', r, room);
     }
 
-    function handleBan(name, msg) {
+    function handleBan(name, msg, room) {
         let r, time, args = msg.split(" ");
         if (args.length == 2 || args.length == 3) {
             time = ~~args[2] || 3000;
@@ -86,9 +86,9 @@ io.on('connection', function(socket) {
             ban(name);
             setTimeout(function() { unban(name) }, time);
         } else {
-            r = "Invalid syntax. Correct syntax is /ban [username] [time in seconds] or /ban [username]"
+            r = "<i>Invalid syntax. Correct syntax is /ban [username] [time in seconds] or /ban [username]</i>"
         }
-        io.to(usernames[[name]]).emit('chatroom message', r);
+        io.to(usernames[[name]]).emit('chatroom message', r, room);
     }
 
     function ban(name) {
@@ -99,10 +99,10 @@ io.on('connection', function(socket) {
         // TODO: make it so they can chat again
     }
 
-    function handleBarno(name) {
-        let r = "Barno<br>";
-        for (let i = 0; i < 19; i++) r += "Barno<br>";
-        io.to(usernames[[name]]).emit('chatroom message', r);
+    function handleBarno(name, room) {
+        let r = "Barno";
+        for (let i = 0; i < 100; i++) r += " Barno";
+        io.to(usernames[[name]]).emit('chatroom message', r, room);
     }
 
     socket.on('challenge', function(opponentName, challenger) {
@@ -185,7 +185,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('chat message', function (msg, name, roomname) { // TODO: Sanitize for HTML
+    socket.on('chat message', function (msg, name, roomname) { // TODO: Sanitize for HTML, filter language
         msg = name + ": " + msg;
         io.to(roomname).emit('chat message', msg);
     });

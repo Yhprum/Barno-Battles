@@ -197,14 +197,6 @@ $(document).ready(function() {
                     document.getElementById('atk' + i).innerText = cards[deck[i]].atk;
                     document.getElementById('def' + i).innerText = cards[deck[i]].def;
                 }
-                $("#activePlayer").attr({
-                    src: 'cards/' + deck[0] + '.png',
-                    name: deck[0]
-                });
-                $("#activeOpponent").attr({ // TODO: change to get from opponent on game start
-                    src: 'cards/' + deck[0] + '.png',
-                    name: deck[0]
-                });
 
                 $("#selections .action").on("click", function(e) {
                     if (e.target.id.includes("ability")) { // TODO: remove after implementing abilities
@@ -250,17 +242,36 @@ $(document).ready(function() {
                 });
 
                 var hpValues = {};
-                $(".cards .barno img").each(function() {
+                $("#game-" + gameNumber + " .cards .barno img").each(function() {
                     hpValues[[this.name]] = {"hp": cards[this.name].hp};
                 });
                 socket.emit('set hp', name, hpValues, roomname);
-                activeCard = $activeCard.name;
-                activeOpponent = $activeOpponent.name;
-                hpPlayer.innerText = cards[[activeCard]].hp;
-                hpOpponent.innerText = cards[[activeOpponent]].hp;
-                timer = window.setInterval(updateTimer, TIMER_SPEED);
+                nextMove.innerText = "Select card to lead";
+                window.setTimeout(startGame, 5000); // TODO: display notification of game start
             });
         });
+
+        function startGame() {
+            if (!selection.includes("card")) { // If nothing selected, pick the 1st available
+                selection = "card0";
+            }
+            activeCard = document.getElementById(selection).name;
+            $("#activePlayer").attr({
+                src: 'cards/' + activeCard + '.png',
+                name: activeCard
+            });
+            $("#activeOpponent").attr({ // TODO: change to get from opponent on game start
+                src: 'cards/' + deck[0] + '.png',
+                name: deck[0]
+            });
+            activeCard = $activeCard.name;
+            activeOpponent = $activeOpponent.name;
+            hpPlayer.innerText = cards[[activeCard]].hp;
+            hpOpponent.innerText = cards[[activeOpponent]].hp;
+            selection = DEFAULT_SELECTION;
+            nextMove.innerText = "Your next move is...";
+            timer = window.setInterval(updateTimer, TIMER_SPEED);
+        }
 
         function updateTimer() { // update to use room
             c.clearRect(0, 0, width, height);
@@ -314,7 +325,7 @@ $(document).ready(function() {
             document.getElementById('hp' + deck.indexOf(activeCard)).innerText = hp[[name]][[activeCard]].hp;
             if (hp[[name]][[activeCard]].hp > 0 && hp[[opponent]][[activeOpponent]].hp > 0) {
                 timer = window.setInterval(updateTimer, TIMER_SPEED);
-            } else { // card is defeated
+            } else { // card is defeated TODO: check for both cards defeated at same time
                 if (hp[[name]][[activeCard]].hp <= 0) { // it's the player's card that is defeated
                     // TODO: disable clicking on moves, create default selection
                     // also disble clicking on defeated cards/remove css stuff
@@ -355,7 +366,7 @@ $(document).ready(function() {
                     }
                 }
                 // switch cards
-                activeCard = $("#" + selection)[0].name;
+                activeCard = document.getElementById(selection).name;
                 $("#activePlayer").attr({
                     src: 'cards/' + activeCard + '.png',
                     name: activeCard
