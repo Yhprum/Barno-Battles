@@ -247,31 +247,35 @@ $(document).ready(function() {
                 });
                 socket.emit('set hp', name, hpValues, roomname);
                 nextMove.innerText = "Select card to lead";
-                window.setTimeout(startGame, 5000); // TODO: display notification of game start
+                window.setTimeout(selectLead, 5000); // TODO: display notification of game start
             });
         });
 
-        function startGame() {
+        function selectLead() {
             if (!selection.includes("card")) { // If nothing selected, pick the 1st available
                 selection = "card0";
             }
             activeCard = document.getElementById(selection).name;
+            socket.emit('select lead', activeCard, roomname);
+        }
+
+        socket.on('start timer', function(activeCards) {
+            debugger;
+            activeOpponent = activeCards[0] != activeCard ? activeCards[0] : activeCards[1];
             $("#activePlayer").attr({
                 src: 'cards/' + activeCard + '.png',
                 name: activeCard
             });
             $("#activeOpponent").attr({ // TODO: change to get from opponent on game start
-                src: 'cards/' + deck[0] + '.png',
-                name: deck[0]
+                src: 'cards/' + activeOpponent + '.png',
+                name: activeOpponent
             });
-            activeCard = $activeCard.name;
-            activeOpponent = $activeOpponent.name;
             hpPlayer.innerText = cards[[activeCard]].hp;
             hpOpponent.innerText = cards[[activeOpponent]].hp;
             selection = DEFAULT_SELECTION;
             nextMove.innerText = "Your next move is...";
             timer = window.setInterval(updateTimer, TIMER_SPEED);
-        }
+        });
 
         function updateTimer() { // update to use room
             c.clearRect(0, 0, width, height);

@@ -136,6 +136,13 @@ io.on('connection', function(socket) {
         rooms[[roomname]]['hp'][[name]] = vals;
     });
 
+    socket.on('select lead', function(active, roomname) {
+        rooms[[roomname]]['activeCards'].push(active);
+        if (rooms[[roomname]]['activeCards'].length == 2) {
+            io.to(roomname).emit('start timer', rooms[[roomname]]['activeCards']);
+        }
+    });
+
     socket.on('use move', function(name, opponentName, move, card, active, roomname) {
         var cur = rooms[[roomname]];
         if(cur) {
