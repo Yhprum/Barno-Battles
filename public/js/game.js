@@ -34,13 +34,14 @@ $(document).ready(function() {
         }
     });
 
+    var unread = {"Lobby": 0, "Suggestions": 0};
+
     $("#chatrooms>a").click(function (e) {
         e.preventDefault();
         chatroom = this.name;
         $(this).siblings('a.active').removeClass("active");
         $(this).tab('show');
         document.getElementById("chatroomName").innerText = chatroom;
-        if (name) document.getElementById("chatroomInput").placeholder = "Chat to " + chatroom;
     });
 
     $chatForm.on('submit', function() {return false});
@@ -71,8 +72,12 @@ $(document).ready(function() {
     function login() {
         socket = io();
         socket.emit('login', name);
-        document.getElementById("headerButton").innerHTML = name + " <span class='caret'></span>";
-        document.getElementById("headerDropdown").innerHTML = '<a class="dropdown-item" href="#"" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>';
+        let dropdownItems = '<a class="dropdown-item" href="#">Profile</a>';
+        dropdownItems += '<a class="dropdown-item" href="#">Placeholder</a>';
+        dropdownItems += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>'
+        document.getElementById("headerButton").innerHTML = name;
+        document.getElementById("headerButton").classList = "dropdown-toggle";
+        document.getElementById("headerDropdown").innerHTML = dropdownItems;
         document.getElementById("chatroomInput").disabled = false;
         document.getElementById("chatroomInput").placeholder = "Chat to " + chatroom;
 
@@ -81,6 +86,17 @@ $(document).ready(function() {
             $("#deckbuilder img").each(function() {
                 deck[i++] = this.name;
             });
+        });
+
+        $("#chatrooms>a").click(function (e) {
+            e.preventDefault();
+            chatroom = this.name;
+            $(this).siblings('a.active').removeClass("active");
+            $(this).tab('show');
+            document.getElementById("chatroomName").innerText = chatroom;
+            document.getElementById("chatroomInput").placeholder = "Chat to " + chatroom;
+            document.getElementById("badge" + chatroom).innerText = 0
+            unread[[chatroom]] = 0;
         });
 
         socket.on('users', function(usernames) { // update user list
@@ -145,16 +161,16 @@ $(document).ready(function() {
         socket.on('start game', function(gameNumber) {
             var gameTab = document.createElement("li");
             gameTab.classList = "nav-item";
-            gameTab.innerHTML = "<a class='nav-link' data-toggle='tab' href='#game" + gameNumber + "'>vs. " + opponent + "<span class='close'>&times;</span></a>"
+            gameTab.innerHTML = "<a class='nav-link' data-toggle='tab' href='#game-" + gameNumber + "'>vs. " + opponent + "<span class='close'>&times;</span></a>"
             document.getElementById("tabList").appendChild(gameTab);
 
             var gameHTML = document.createElement("div");
-            gameHTML.id = "game" + gameNumber;
+            gameHTML.id = "game-" + gameNumber;
             gameHTML.classList = "tab-pane fade";
             document.getElementById("tabContent").appendChild(gameHTML);
 
-            $("#game" + gameNumber).load("game.html", function() {
-                $('#tabList a[href="#game' + gameNumber + '"]').tab('show');
+            $("#game-" + gameNumber).load("game.html", function() {
+                $('#tabList a[href="#game-' + gameNumber + '"]').tab('show');
                 // Instantiate game screen vars
                 $activeCard = document.getElementById('activePlayer');
                 $activeOpponent = document.getElementById('activeOpponent');
@@ -377,6 +393,9 @@ $(document).ready(function() {
             dt = dt.substring(0, dt.length - 6);
             msg = "<small class='timestamp'>" + dt + " </small>" + msg; // TODO: user preferences for timestamps
             $("#messages" + room).append($("<li>").html(msg));
+            if (room != chatroom) {
+                document.getElementById("badge" + room).innerText = ++unread[[room]]
+            }
         });
 
         socket.on('game end', function(str) {
