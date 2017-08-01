@@ -302,7 +302,7 @@ $(document).ready(function() {
             let text = document.createElement("td");
             text.innerHTML = '<b class="turn">Turn ' + turn + '</b>';
             row.appendChild(text);
-            $("#history")[0].appendChild(row);
+            $("#history")[0].appendChild(row); // TODO: Scroll history to bottom
 
             document.getElementById("turnNumber").innerText = "Turn " + (turn + 1);
 
@@ -411,6 +411,9 @@ $(document).ready(function() {
             if (room != chatroom) {
                 document.getElementById("badge" + room).innerText = ++unread[[room]]
             }
+            $("#scrollChat").stop ().animate ({
+                scrollTop: $("#scrollChat")[0].scrollHeight
+            });
         });
 
         socket.on('game end', function(str) {
