@@ -54,7 +54,7 @@ $(document).ready(function() {
     $usernameInput.on('keyup', function (e) {
         if (e.keyCode === 13) {
             verify();
-            // $("#loginDropdown").dropdown("toggle"); // this makes the dropdown unusable
+            $("#headerButton").dropdown("toggle");
         }
     });
 
@@ -375,7 +375,7 @@ $(document).ready(function() {
         socket.on('chatroom message', function(msg, room) { // TODO: highlight user-sent messages/@usernames?
             var dt = new Date().toLocaleTimeString();
             dt = dt.substring(0, dt.length - 6);
-            msg = "<small>" + dt + " </small>" + msg; // TODO: user preferences for timestamps
+            msg = "<small class='timestamp'>" + dt + " </small>" + msg; // TODO: user preferences for timestamps
             $("#messages" + room).append($("<li>").html(msg));
         });
 

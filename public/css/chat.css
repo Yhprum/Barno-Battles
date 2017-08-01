@@ -19,12 +19,12 @@ body .list-group-item.active .list-group-item-heading, .list-group-item.active .
 }
 
 .messages li {
-    padding: 5px 10px;
+    padding: 0px 10px;
 
 }
 
-.messages li:nth-child(odd) {
-    background: #eee;
+.timestamp {
+    color: silver;
 }
 
 #chatForm .input-group {
