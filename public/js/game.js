@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var name, opponent;
     var roomname;
-    var socket;
+    var socket = io();
     var chatroom = "Lobby";
     var $login = $("#login");
     var $usernameInput = $("#username");
@@ -58,11 +58,67 @@ $(document).ready(function() {
             $("#headerButton").dropdown("toggle");
         }
     });
+    $("#changeName").on('click', function() {
+        $(".dropdown-menu").children().hide();
+        $("#dropdownUsername").show();
+        setTimeout(function() {$("#headerButton").dropdown("toggle")}, 100);
+    });
+
+    $("#createPassword").on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            let password = $("#createPassword").val();
+            socket.emit('register user', name, password);
+            login();
+        }
+    });
+    $("#register").on('click', function() {
+        let password = $("#createPassword").val();
+        socket.emit('register user', name, password); // TODO: Need a way to change password
+        login();
+    });
+
+    $("#verify").on('click', function() {
+        let password = $("#password").val();
+        socket.emit('authenticate', name, password, function(success) {
+            if (success) {
+                login();
+            } else {
+                document.getElementById("status").innerText = "Incorrect password";
+                $("#headerButton").dropdown("toggle");
+                $("#password").val("");
+            }
+        });
+    });
+    $("#password").on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            let password = $("#password").val();
+            socket.emit('authenticate', name, password, function(success) {
+                if (success) {
+                    login();
+                } else {
+                    document.getElementById("status").innerText = "Incorrect password";
+                    $("#password").val("");
+                }
+            });
+        }
+    });
 
     function verify() { // TODO: make sure names can only be letters/numbers (or create escaping method which I don't wanna do)
         name = $usernameInput.val().trim(); // or change all the places where I used the name as an id
         if (name && name.match(/[\w]+/)[0] === name) { // change to server-side?
-            login();
+            socket.emit('check user', name, function(status) {
+                if (status == "registered") {
+                    $(".dropdown-menu").children().hide();
+                    $("#dropdownPassword").show();
+                    $("#headerButton").dropdown("toggle");
+                    $("#password").focus();
+                } else if (status == "open") {
+                    $(".dropdown-menu").children().hide();
+                    $("#dropdownRegister").show();
+                    $("#headerButton").dropdown("toggle");
+                    $("#createPassword").focus();
+                }  
+            });
         } else {
             // display error
             alert("Names currently can only consist of letters, numbers, and _");
@@ -70,14 +126,13 @@ $(document).ready(function() {
     }
 
     function login() {
-        socket = io();
         socket.emit('login', name);
-        let dropdownItems = '<a class="dropdown-item" href="#">Profile</a>';
+        let dropdownItems = '<li><a class="dropdown-item" href="#">Profile</a>';
         dropdownItems += '<a class="dropdown-item" href="#">Placeholder</a>';
-        dropdownItems += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#deckbuilder">Build Deck</a>'
+        dropdownItems += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#deckbuilder">Build Deck</a><li>'
         document.getElementById("headerButton").innerHTML = name;
         document.getElementById("headerButton").classList = "dropdown-toggle";
-        document.getElementById("headerDropdown").innerHTML = dropdownItems;
+        document.getElementById("dropdownMenu").innerHTML = dropdownItems;
         document.getElementById("chatroomInput").disabled = false;
         document.getElementById("chatroomInput").placeholder = "Chat to " + chatroom;
 

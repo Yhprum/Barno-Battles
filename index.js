@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require("path");
 var mongo = require("mongodb").MongoClient;
+var bcrypt = require("bcrypt");
 
 var calculator = require("./calculator");
 
@@ -42,6 +43,36 @@ mongo.connect(url, function(err, db) {
 
 function startSocket(collections) {
     io.on('connection', function(socket) {
+
+        socket.on('check user', function(name, callback) {
+            collections["users"].findOne({username: name.toLowerCase()}, function (err, item) {
+                if (item != null) {
+                    callback("registered");
+                } else {
+                    callback("open");
+                }
+            });
+        });
+        socket.on('authenticate', function(name, password, callback) {
+            collections["users"].findOne({username: name.toLowerCase()}, function (err, item) {
+                var hash = item.password;
+                bcrypt.compare(password, hash, function(err, res) {
+                    callback(res);
+                });
+            });
+        });
+        socket.on('register user', function(name, password) {
+            var dt = new Date().toLocaleString();
+            bcrypt.hash(password, 10, function(err, hash) {
+                collections["users"].insert({
+                    username: name.toLowerCase(),
+                    password: hash,
+                    date: dt,
+                    usertype: "user",
+                    flags: []
+                });
+            });
+        });
 
         socket.on('login', function(name) {
             socket.username = name;

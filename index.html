@@ -15,11 +15,25 @@
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#gandalf">About</a></li>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#chat">Chat</a></li>
         <a class="dropdown" id="loginDropdown">
-          <button role="button" id="headerButton" data-toggle="dropdown">Log In</button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li id="headerDropdown">Choose a Username:
+          <button role="button" id="headerButton" data-toggle="dropdown">Sign In</button>
+          <ul class="dropdown-menu dropdown-menu-right" id="dropdownMenu">
+            <li id="dropdownUsername">
+              <span>Choose a Username:</span>
               <input id="username" type="text">
               <button role="button" id="login">Submit</button>
+            </li>
+            <li id="dropdownPassword" style="display: none;">
+              <small id="status" style="color: red">This username has been registered</small><br>
+              <span>Enter Password:</span>
+              <input id="password" type="password">
+              <button role="button" id="verify">Submit</button>
+              <button class="float-right" role="button" id="changeName">Change Name</button>
+            </li>
+            <li id="dropdownRegister" style="display: none;">
+              <small id="status" style="color: red">This username is available!</small><br>
+              <span>Choose Password:</span>
+              <input id="createPassword" type="password">
+              <button role="button" id="register">Register</button>
             </li>
           </ul>
         </a>
