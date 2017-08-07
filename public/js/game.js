@@ -61,6 +61,7 @@ $(document).ready(function() {
     $("#changeName").on('click', function() {
         $(".dropdown-menu").children().hide();
         $("#dropdownUsername").show();
+        $("#password").val("");
         setTimeout(function() {$("#headerButton").dropdown("toggle")}, 100);
     });
 
